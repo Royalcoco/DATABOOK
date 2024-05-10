@@ -151,3 +151,34 @@ class Blockchain:
                 return False
 
         return True
+from Crypto.PublicKey import RSA
+from Crypto.Signature import pkcs1_15
+from Crypto.Hash import SHA256
+
+class Wallet:
+    def __init__(self):
+        self.key_pair = RSA.generate(2048)
+
+    def sign_transaction(self, transaction):
+        h = SHA256.new(transaction.encode())
+        signature = pkcs1_15.new(self.key_pair).sign(h)
+        return signature
+
+    def verify_signature(self, transaction, signature):
+        h = SHA256.new(transaction.encode())
+        try:
+            pkcs1_15.new(self.key_pair).verify(h, signature)
+            return True
+        except (ValueError, TypeError):
+            return False
+
+class Blockchain:
+    # ... existing code ...
+
+    def create_transaction(self, sender_wallet, recipient_address, amount):
+        transaction = Transaction(sender_wallet.key_pair.publickey(), recipient_address, amount)
+        signature = sender_wallet.sign_transaction(str(transaction))
+        if sender_wallet.verify_signature(str(transaction), signature):
+            self.pending_transactions.append(transaction)
+        else:
+            print("Transaction signature is invalid.")
