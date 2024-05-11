@@ -238,3 +238,161 @@ colored_equation_plot.paste(color_map, (0, 0), mask=color_map)
 
 # Save the final image with the NFT and Morse code colors
 colored_equation_plot.save('colored_equation_plot.png')
+# Display the final image with the NFT and Morse code colors
+colored_equation_plot.show()
+# Send the final image with the NFT and Morse code colors to the recipients
+send_email(recipient1_email, 'Colored Equation Plot', 'Please find the colored equation plot attached.', 'colored_equation_plot.png')
+send_email(recipient2_email, 'Colored Equation Plot', 'Please find the colored equation plot attached.', 'colored_equation_plot.png')
+send_email(recipient3_email, 'Colored Equation Plot', 'Please find the colored equation plot attached.', 'colored_equation_plot.png')
+# Create a probability distribution plot of the equation
+x = range(-10, 11)
+y = [a*(x**2) + b*x + c for x in x]
+
+plt.plot(x, y)
+plt.xlabel('x')
+plt.ylabel('Probability')
+plt.title('Equation Probability Distribution')
+plt.grid(True)
+plt.savefig('equation_plot.png')
+
+# Send the equation plot image to the recipients
+recipient1_email = ' recipients = ' + recipients + ' and recipients = ' + recipients + ' and recipients = ' + recipients + ' and recipients = ' + recipients + ' and recipients = ' + recipients + ' and recipients = ' + recipients + ' and recipients = ' + recipients + ' and recipients = ' + recipients + ' and recipients = ' + recipients + ' and recipients = ' + recipients
+send_email(recipient1_email, 'Equation Plot', 'Please find the equation plot attached.', 'equation_plot.png')
+send_email(recipient2_email, 'Equation Plot', 'Please find the equation plot attached.', 'equation_plot.png')
+send_email(recipient3_email, 'Equation Plot', 'Please find the equation plot attached.', 'equation_plot.png')
+
+# Convert the equation plot image to an NFT
+nft_image = convert_to_nft('equation_plot.png')
+
+# Send the NFT image to the recipients
+send_email(recipient1_email, 'NFT Image', 'Please find the NFT image attached.', nft_image)
+send_email(recipient2_email, 'NFT Image', 'Please find the NFT image attached.', nft_image)
+send_email(recipient3_email, 'NFT Image', 'Please find the NFT image attached.', nft_image)
+# Convert the encoded data to a numpy array
+encoded_data_array = np.array(list(encoded_data))
+
+# Reshape the array to match the dimensions of the equation plot image
+encoded_data_array = encoded_data_array.reshape((len(part1), len(part1[0])))
+# Scale the values of the array to the range of RGB colors
+scaled_array = (encoded_data_array / np.max(encoded_data_array)) * 255
+
+# Create a color map using the scaled array
+color_map = Image.fromarray(scaled_array.astype(np.uint8), mode='L')
+
+# Open the equation plot image
+equation_plot = Image.open('equation_plot.png')
+
+# Resize the equation plot image to match the dimensions of the color map
+equation_plot = equation_plot.resize(color_map.size)
+
+# Convert the equation plot image to grayscale
+equation_plot = equation_plot.convert('L')
+
+# Apply the color map to the equation plot image
+colored_equation_plot = equation_plot.convert('RGB')
+colored_equation_plot.paste(color_map, (0, 0), mask=color_map)
+
+# Save the final image with the NFT and Morse code colors
+colored_equation_plot.save('colored_equation_plot.png')
+# Display the final image with the NFT and Morse code colors
+colored_equation_plot.show()
+# Send the final image with the NFT and Morse code colors to the recipients
+send_email(recipient1_email, 'Colored Equation Plot', 'Please find the colored equation plot attached.', 'colored_equation_plot.png')
+send_email(recipient2_email, 'Colored Equation Plot', 'Please find the colored equation plot attached.', 'colored_equation_plot.png')
+send_email(recipient3_email, 'Colored Equation Plot', 'Please find the colored equation plot attached.', 'colored_equation_plot.png')
+# Create a probability distribution plot of the equation
+x = range(-10, 11)
+y = [a*(x**2) + b*x + c for x in x]
+
+plt.plot(x, y)
+plt.xlabel('x')
+plt.ylabel('Probability')
+plt.title('Equation Probability Distribution')
+plt.grid(True)
+plt.savefig('equation_plot.png')
+
+# Send the equation plot image to the recipients
+recipient1_email = '
+send_email(recipient1_email, 'Equation Plot', 'Please find the equation plot attached.', 'equation_plot.png')
+send_email(recipient2_email, 'Equation Plot', 'Please find the equation plot attached.', 'equation_plot.png')
+send_email(recipient3_email, 'Equation Plot', 'Please find the equation plot attached.', 'equation_plot.png')
+
+# Convert the equation plot image to an NFT
+nft_image = convert_to_nft('equation_plot.png')
+
+# Send the NFT image to the recipients
+send_email(recipient1_email, 'NFT Image', 'Please find the NFT image attached.', nft_image)
+send_email(recipient2_email, 'NFT Image', 'Please find the NFT image attached.', nft_image)
+send_email(recipient3_email, 'NFT Image', 'Please find the NFT image attached.', nft_image)
+# Convert the encoded data to a numpy array
+encoded_data_array = np.array(list(encoded_data))
+
+# Reshape the array to match the dimensions of the equation plot image
+encoded_data_array = encoded_data_array.reshape((len(part1), len(part1[0])))
+# Scale the values of the array to the range of RGB colors
+scaled_array = (encoded_data_array / np.max(encoded_data_array)) * 255
+
+# Create a color map using the scaled array
+color_map = Image.fromarray(scaled_array.astype(np.uint8), mode='L')
+
+# Open the equation plot image
+equation_plot = Image.open('equation_plot.png')
+
+# Resize the equation plot image to match the dimensions of the color map
+equation_plot = equation_plot.resize(color_map.size)
+
+# Convert the equation plot image to grayscale
+equation_plot = equation_plot.convert('L')
+
+# Apply the color map to the equation plot image
+colored_equation_plot = equation_plot.convert('RGB')
+colored_equation_plot.paste(color_map, (0, 0), mask=color_map)
+
+# Save the final image with the NFT and Morse code colors
+colored_equation_plot.save('colored_equation_plot.png')
+# Display the final image with the NFT and Morse code colors
+colored_equation_plot.show()
+# Send the final image with the NFT and Morse code colors to the recipients
+send_email(recipient1_email, 'Colored Equation Plot', 'Please find the colored equation plot attached.', 'colored_equation_plot.png')
+send_email(recipient2_email, 'Colored Equation Plot', 'Please find the colored equation plot attached.', 'colored_equation_plot.png')
+send_email(recipient3_email, 'Colored Equation Plot', 'Please find the colored equation plot attached.', 'colored_equation_plot.png')
+# Create a probability distribution plot of the equation
+x = range(-10, 11)
+y = [a*(x**2) + b*x + c for x in x]
+
+plt.plot(x, y)
+plt.xlabel('x')
+plt.ylabel('Probability')
+plt.title('Equation Probability Distribution')
+plt.grid(True)
+plt.savefig('equation_plot.png')
+
+# Send the equation plot image to the recipients
+recipient1_email = '
+send_email(recipient1_email, 'Equation Plot', 'Please find the equation plot attached.', 'equation_plot.png')
+send_email(recipient2_email, 'Equation Plot', 'Please find the equation plot attached.', 'equation_plot.png')
+send_email(recipient3_email, 'Equation Plot', 'Please find the equation plot attached.', 'equation_plot.png')
+
+# Convert the equation plot image to an NFT
+nft_image = convert_to_nft('equation_plot.png')
+
+# Send the NFT image to the recipients
+send_email(recipient1_email, 'NFT Image', 'Please find the NFT image attached.', nft_image)
+send_email(recipient2_email, 'NFT Image', 'Please find the NFT image attached.', nft_image)
+send_email(recipient3_email, 'NFT Image', 'Please find the NFT image attached.', nft_image)
+# Convert the encoded data to a numpy array
+encoded_data_array = np.array(list(encoded_data))
+
+# Reshape the array to match the dimensions of the equation plot image
+encoded_data_array = encoded_data_array.reshape((len(part1), len(part1[0])))
+# Scale the values of the array to the range of RGB colors
+scaled_array = (encoded_data_array / np.max(encoded_data_array)) * 255
+
+# Create a color map using the scaled array
+color_map = Image.fromarray(scaled_array.astype(np.uint8), mode='L')
+
+# Open the equation plot image
+equation_plot = Image.open('equation_plot.png')
+
+# Resize the equation plot image to match the dimensions of the color map
+equation_plot = equation_plot.resize(color_map.size)
