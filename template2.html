@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Titre de la page</title>
+</head>
+<body>
+    <h1>Titre principal</h1>
+    <p>Contenu de la page</p>
+    
+    <script>
+        var userInput = prompt("Enter your name:");
+        // Use the userInput variable to perform further actions
+    </script>
+    <p>Hello, <span id="name"></span>!</p>
+
+    <script>
+        document.getElementById("name").textContent = userInput;
+        <script>
+            // Initialize CloudKit
+            CloudKit.configure({
+                containers: [{
+                    containerIdentifier: 'your-container-identifier',
+                    apiToken: 'your-api-token',
+                    environment: 'development'
+                }]
+            });
+
+            // Access the shared data source
+            const container = CloudKit.getDefaultContainer();
+            const publicDB = container.publicCloudDatabase;
+
+            // Perform operations on the shared data source
+            // For example, fetch records
+            publicDB.performQuery({
+                recordType: 'your-record-type',
+                sortBy: [{ fieldName: 'your-sort-field', ascending: true }],
+                limit: 10
+            }).then(function(response) {
+                // Handle the fetched records
+                const records = response.records;
+                records.forEach(function(record) {
+                    // Access the record's fields
+                    const field1 = record.fields.field1;
+                    const field2 = record.fields.field2;
+                    // ...
+                });
+            }).catch(function(error) {
+                // Handle any errors
+                console.error('Error fetching records:', error);
+            });
+        </script>
+    </script>
+</body>
+</html>
