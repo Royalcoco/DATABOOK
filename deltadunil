@@ -1,0 +1,488 @@
+from flask import Flask, render_template, request
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return render_template('index.html')
+
+@app.route('/create_transaction', methods=['POST'])
+def create_transaction():
+    sender_wallet = Wallet()  # You would actually get this from somewhere secure
+    recipient_address = request.form.get('recipient_address')
+    amount = request.form.get('amount')
+    blockchain.create_transaction(sender_wallet, recipient_address, amount)
+    return "Transaction created."
+
+if __name__ == '__main__':
+    app.run(debug=True)
+    class Transaction:
+    def __init__(self, sender_address, recipient_address, amount):
+        self.sender_address = sender_address
+        self.recipient_address = recipient_address
+        self.amount = amount
+
+class Blockchain:
+    # ... existing code ...
+
+    def __init__(self):
+        self.chain = [self.create_genesis_block()]
+        self.pending_transactions = []
+        self.mining_reward = 100  # Set this to whatever you want the mining reward to be
+
+    def mine_pending_transactions(self, miner_address):
+        # In a real blockchain, we would not include all pending transactions, but select them based on certain criteria
+        new_block = Block(self.pending_transactions, self.get_latest_block().hash)
+        new_block.mine_block(self.difficulty)
+
+        print("Block successfully mined!")
+        self.chain.append(new_block)
+
+        self.pending_transactions = [
+            Transaction(None, miner_address, self.mining_reward)
+        ]
+        class Wallet:
+    # ... existing code ...
+
+    def unlock(self, private_key):
+        self.key_pair = RSA.import_key(private_key)
+
+    def lock(self):
+        self.key_pair = None
+
+class Blockchain:
+    # ... existing code ...
+
+    def send_from_wallet(self, sender_wallet, recipient_address, amount):
+        if sender_wallet.key_pair is None:
+            print("Wallet is locked. Cannot send transaction.")
+            return
+
+        self.create_transaction(sender_wallet, recipient_address, amount)
+        print("Transaction created.")
+        class Blockchain:
+    # ... existing code ...
+    from flask import Flask, request
+app = Flask(__name__)
+
+@app.route('/send_from_wallet', methods=['POST'])
+def send_from_wallet_api():
+    sender_wallet = Wallet()  # You would actually get this from somewhere secure
+    sender_wallet.unlock(request.form.get('private_key'))
+    recipient_address = request.form.get('recipient_address')
+    amount = request.form.get('amount')
+    blockchain.send_from_wallet(sender_wallet, recipient_address, amount)
+    sender_wallet.lock()
+    return "Transaction sent."
+
+if __name__ == '__main__':
+    app.run(debug=True)
+    class Wallet:
+    # ... existing code ...
+    
+    def sign(self, message):
+        h = SHA256.new(message.encode()).digest()
+        signer = PKCS1_v1_5.new(self.key_pair)
+        return binascii.hexlify(signer.sign(h)).decode()
+    
+    def verify(self, message, signature):
+        h = SHA256.new(message.encode()).digest()
+        verifier = PKCS1_v1_5.new(self.key_pair.publickey())
+        return verifier.verify(h, binascii.unhexlify(signature))
+    
+class Blockchain:
+    # ... existing code ...
+    
+    def create_transaction(self, sender_wallet, recipient_address, amount):
+        if sender_wallet.key_pair is None:
+            print("Wallet is locked. Cannot create transaction.")
+            return
+        
+        if sender_wallet.balance(self) < amount:
+            print("Insufficient balance.")
+            return
+        
+        transaction = Transaction(sender_wallet.address(), recipient_address, amount)
+        signature = sender_wallet.sign(str(transaction.__dict__))
+        self.pending_transactions.append({
+            "transaction": transaction.__dict__,
+            "signature": signature
+        })
+        print("Transaction created.")
+    class Blockchain:
+    # ... existing code ...
+    
+    def verify_transaction(self, transaction):
+        sender_wallet = Wallet()
+        sender_wallet.key_pair = RSA.import_key(transaction['transaction']['sender_address'])
+        signature = transaction['signature']
+        return sender_wallet.verify(str(transaction['transaction']), signature)
+    
+    def mine_pending_transactions(self, miner_address):
+        # In a real blockchain, we would not include all pending transactions, but select them based on certain criteria
+        for transaction in self.pending_transactions:
+            if not self.verify_transaction(transaction):
+                print("Invalid transaction. Not mining block.")
+                return
+        
+        new_block = Block(self.pending_transactions, self.get_latest_block().hash)
+        new_block.mine_block(self.difficulty)
+        
+        print("Block successfully mined!")
+        self.chain.append(new_block)
+        
+        self.pending_transactions = [
+            Transaction(None, miner_address, self.mining_reward)
+        ]
+    class Blockchain:
+    # ... existing code ...
+    
+    def get_balance(self, wallet_address):
+        balance = 0
+        
+        for block in self.chain:
+            for transaction in block.transactions:
+                if transaction.sender_address == wallet_address:
+                    balance -= transaction.amount
+                if transaction.recipient_address == wallet_address:
+                    balance += transaction.amount
+        
+        return balance
+    class Wallet:
+    # ... existing code ...
+    
+    def balance(self, blockchain):
+        return blockchain.get_balance(self.address())
+    class Blockchain:
+    # ... existing code ...
+    
+    def get_balance(self, wallet_address):
+        balance = 0
+        
+        for block in self.chain:
+            for transaction in block.transactions:
+                if transaction.sender_address == wallet_address:
+                    balance -= transaction.amount
+                if transaction.recipient_address == wallet_address:
+                    balance += transaction.amount
+        
+        return balance
+    class Wallet:
+    # ... existing code ...
+    
+    def balance(self, blockchain):
+        return blockchain.get
+    class Wallet:
+    # ... existing code ...
+    import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.Unirest;
+
+public class Main {
+    public static void main(String[] args) {
+        try {
+            HttpResponse<String> response = Unirest.post("http://localhost:5000/send_from_wallet")
+                .field("private_key", "your_private_key")
+                .field("recipient_address", "recipient_address")
+                .field("amount", "amount")
+                .asString();
+            System.out.println(response.getBody());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+}
+    class Wallet:
+    # ... existing code ...
+    
+    def send_transaction(self, recipient_address, amount):
+        response = requests.post(
+            "http://localhost:5000/send_from_wallet",
+            data={
+                "private_key": self.key_pair.export_key().decode(),
+                "recipient_address": recipient_address,
+                "amount": amount
+            }
+        )
+        
+        print(response.text)
+    class Wallet:class Wallet:
+    # ... existing code ...
+
+    def unlock(self, private_key):
+        self.key_pair = RSA.import_key(private_key)
+
+    def lock(self):
+        self.key_pair = None
+
+class Blockchain:
+    # ... existing code ...
+
+    def send_from_wallet(self, sender_wallet, recipient_address, amount):
+        if sender_wallet.key_pair is None:
+            print("Wallet is locked. Cannot send transaction.")
+            return
+
+        self.create_transaction(sender_wallet, recipient_address, amount)
+        sender_wallet.lock()
+        print("Transaction created.")
+
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.Unirest;
+
+public class Main {
+    public static void main(String[] args) {
+        try {
+            HttpResponse<String> response = Unirest.post("http://localhost:5000/send_from_wallet")
+                .field("private_key", "your_private_key")
+                .field("recipient_address", "recipient_address")
+                .field("amount", "amount")
+                .asString();
+            System.out.println(response.getBody());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+}
+import random
+import random
+
+# Generate a random float number between 0 and 1
+random_number = random.random()
+print(random_number)
+
+
+# Generate a random integer between 1 and 10
+random_integer = random.randint(1, 10)
+print(random_integer)
+
+# Define the Morse code dictionary
+morse_code = {
+    'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.', 'G': '--.', 'H': '....', 'I': '..', 'J': '.---',
+    'K': '-.-', 'L': '.-..', 'M': '--', 'N': '-.', 'O': '---', 'P': '.--.', 'Q': '--.-', 'R': '.-.', 'S': '...', 'T': '-',
+    'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-', 'Y': '-.--', 'Z': '--..', '0': '-----', '1': '.----', '2': '..---',
+    '3': '...--', '4': '....-', '5': '.....', '6': '-....', '7': '--...', '8': '---..', '9': '----.'
+}
+
+# Iterate through each character in the string and convert it to Morse code
+morse_string = ""
+for char in "PING":
+    if char.upper() in morse_code:
+        morse_string += morse_code[char.upper()] + " "
+
+# Reverse the Morse code string
+reversed_morse_string = morse_string[::-1]
+
+print(reversed_morse_string)
+import random
+import random
+
+# Generate a random float number between 0 and 1
+random_number = random.random()
+print(random_number)
+
+import matplotlib.pyplot as plt
+
+# Define the data points
+data = [random_number, random_integer]
+
+# Create the x-axis values
+x = range(len(data))
+
+# Plot the data points
+plt.plot(x, data, marker='o')
+
+# Add labels and title
+plt.xlabel('Data Point')
+plt.ylabel('Value')
+plt.title('Data Points on a Curve')
+
+# Show the plot
+plt.show()
+import random
+import random import matplotlib.pyplot as plt import numpy as np
+
+# Generate random data points
+x = np.random.rand(100)
+y = np.random.rand(100)
+
+# Create a scatter plot
+plt.scatter(x, y)
+
+# Add labels and title
+plt.xlabel('X-axis')
+plt.ylabel('Y-axis')
+plt.title('Scatter Plot of Random Data Points')
+    * {
+    box-sizing: border-box;
+}
+    
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+input {
+    margin-bottom: 10px;
+    padding: 5px;
+}
+
+button {
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blockchain Wallet</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Blockchain Wallet</h1>
+        <form action="/send_from_wallet" method="post">
+            <input type="text" name="private_key" placeholder="Private Key">
+            <input type="text" name="recipient_address" placeholder="Recipient Address">
+            <input type="text" name="amount" placeholder="Amount">
+            <button type="submit">Send Transaction</button>
+        </form>
+    </div>
+</body>
+</html>
+    import requests
+    
+response = requests.post(
+    "http://localhost:5000/send_from_wallet",
+    data={
+        "private_key": "your
+        "recipient_address": "recipient_address",
+        "amount": "amount"
+    }
+)
+
+print(response.text)
+    class Wallet:
+    # ... existing code ...
+    
+    def send_transaction(self, recipient_address, amount):
+        response = requests.post(
+            "http://localhost:5000/send_from_wallet",
+            data={
+                "private_key": self.key_pair.export_key().decode(),
+                "recipient_address": recipient_address,
+                "amount": amount
+            }
+        )
+        
+        print(response.text)
+    class Wallet:
+    # ... existing code ...
+    
+    def unlock(self, private_key):
+        self.key_pair = RSA.import_key(private_key)
+        
+    def lock(self):
+        self.key_pair = None
+    class Wallet:
+    # ... existing code ...
+    
+    def sign(self, message):
+        h = SHA256.new(message.encode()).digest()
+        signer = PKCS1_v1_5.new(self.key_pair)
+        return binascii.hexlify(signer.sign(h)).decode()
+        
+    def verify(self, message, signature):
+        h = SHA256.new(message.encode()).digest()
+        verifier = PKCS1_v1_5.new(self.key_pair.publickey())
+        return verifier.verify(h, binascii.unhexlify(signature))
+    class Blockchain:
+    # ... existing code ...
+
+    def verify_transaction(self, transaction):
+        sender_wallet = Wallet()
+        sender_wallet.key_pair = RSA.import_key(transaction['transaction']['sender_address'])
+        signature = transaction['signature']
+        return sender_wallet.verify(str(transaction['transaction']), signature)
+
+    def mine_pending_transactions(self, miner_address):
+        # In a real blockchain, we would not include all pending transactions, but select them based on certain criteria
+        for transaction in self.pending_transactions:
+            if not self.verify_transaction(transaction):
+                print("Invalid transaction. Not mining block.")
+                return
+
+        new_block = Block(self.pending_transactions, self.get_latest_block().hash)
+        new_block.mine_block(self.difficulty)
+
+        print("Block successfully mined!")
+        self.chain.append(new_block)
+
+        self.pending_transactions = [
+            Transaction(None, miner_address, self.mining_reward)
+        ]
+    class Blockchain:
+    # ... existing code ...
+    
+    def get_balance(self, wallet_address):
+        balance = 0
+        
+        for block in self.chain:
+            for transaction in block.transactions:
+                if transaction.sender_address == wallet_address:
+                    balance -= transaction.amount
+                if transaction.recipient_address == wallet_address:
+                    balance += transaction.amount
+        
+        return balance
+    class Wallet:
+    # ... existing code ...
+        
+    def balance(self, blockchain):
+        return blockchain.get_balance(self.address())
+    class Wallet:
+    # ... existing code ...
+    
+    def balance(self, blockchain):
+        return blockchain.get_balance(self.address())
+    class Wallet:
+    # ... existing code ...
+    
+    def send_transaction(self, recipient_address, amount):
+        response = requests.post(
+            "http://localhost:5000/send_from_wallet",
+            data={
+                "private_key": self.key_pair.export_key().decode(),
+                "recipient_address": recipient_address,
+                "amount": amount
+            }
+        )
+        
+        print(response.text)
+    class Wallet:
+    # ... existing code ...
