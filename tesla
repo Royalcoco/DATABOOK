@@ -1,0 +1,70 @@
+import hashlib
+import subprocess
+
+def mine_router(target_hash, difficulty):
+    nonce = 0
+    while True:
+        data = f"Nonce: {nonce}"
+        hash_result = hashlib.sha256(data.encode()).hexdigest()
+        if hash_result[:difficulty] == target_hash[:difficulty]:
+            return nonce
+        nonce += 1
+
+rt hashlib
+
+def mine_router(target_hash, difficulty):
+    nonce = 0
+    while True:
+        data = f"Nonce: {nonce}"
+        hash_result = hashlib.sha256(data.encode()).hexdigest()
+        if hash_result[:difficulty] == target_hash[:difficulty]:
+            return nonce
+        nonce += 1
+        
+target_hash = "0000"
+difficulty = 4
+nonce = mine_router(target_hash, difficulty)
+print(f"Nonce: {nonce}")
+data = f"Nonce: {nonce}"
+hash_result = hashlib.sha256(data.encode()).hexdigest()
+print(f"Hash: {hash_result}")
+
+target_hash = "00000"
+difficulty = 5
+nonce = mine_router(target_hash, difficulty)
+print(f"Nonce: {nonce}")
+data = f"Nonce: {nonce}"
+hash_result = hashlib.sha256(data.encode()).hexdigest()
+print(f"Hash: {hash_result}")
+
+def ping_router(ip_address):
+    try:
+        output = subprocess.check_output(["ping", "-c", "1", ip_address])
+        return True
+    except subprocess.CalledProcessError:
+        return False
+
+ip_address = "192.168.1.1"
+if ping_router(ip_address):
+    print(f"Router at {ip_address} is reachable.")
+else:
+    print(f"Router at {ip_address} is not reachable.")
+    target_hash = "000000"
+    difficulty = 6
+    nonce = mine_router(target_hash, difficulty)
+    print(f"Nonce: {nonce}")
+    data = f"Nonce: {nonce}"
+    hash_result = hashlib.sha256(data.encode()).hexdigest()
+    print(f"Hash: {hash_result}")
+    ip_address = "192.168.1.1"
+    if ping_router(ip_address):
+        print(f"Router at {ip_address} is reachable.")
+    else:
+        print(f"Router at {ip_address} is not reachable.")
+
+def ping_router(ip_address):
+    try:
+        output = subprocess.check_output(["ping", "-c", "1", ip_address])
+        return True
+    except subprocess.CalledProcessError:
+        return False
