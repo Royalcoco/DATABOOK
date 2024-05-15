@@ -1,0 +1,67 @@
+keyboard_azerty = {
+    "a": "%E0",
+    "b": "%E9",
+    "c": "%E7",
+    "d": "%E8",
+    "e": "%E9",
+    "f": "%EA",
+    "g": "%EB",
+    "h": "%EC",
+    "i": "%ED",
+    "j": "%EE",
+    "k": "%EF",
+    "l": "%F0",
+    "m": "%F1",
+    "n": "%F2",
+    "o": "%F3",
+    "p": "%F4",
+    "q": "%F5",
+    "r": "%F6",
+    "s": "%F7",
+    "t": "%F8",
+    "u": "%F9",
+    "v": "%FA",
+    "w": "%FB",
+    "x": "%FC",
+    "y": "%FD",
+    "z": "%FE",
+}
+
+# Exemple d'utilisation
+text = "Bonjour"
+encoded_text = ""
+for char in text:
+    if char.lower() in keyboard_azerty:
+        encoded_text += keyboard_azerty[char.lower()]
+    else:
+        encoded_text += char
+
+print(encoded_text)
+color_mapping = {
+    "a": "\033[31m",  # Red
+    "b": "\033[32m",  # Green
+    "c": "\033[33m",  # Yellow
+    "d": "\033[34m",  # Blue
+    "e": "\033[35m",  # Purple
+    "f": "\033[36m",  # Cyan
+    "g": "\033[37m",  # White
+}
+
+decoded_text = ""
+for char in encoded_text:
+    if char in color_mapping:
+        decoded_text += color_mapping[char] + char + "\033[0m"
+    else:
+        decoded_text += char
+
+print(decoded_text)
+
+# Exemple d'utilisation
+text = "Bonjour"
+encoded_text = ""
+for char in text:
+    if char.lower() in keyboard_azerty:
+        encoded_text += keyboard_azerty[char.lower()]
+    else:
+        encoded_text += char
+        
