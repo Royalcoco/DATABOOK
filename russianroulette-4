@@ -1,0 +1,80 @@
+import hashlib
+import base64
+import random
+
+def encode_ping(ping):
+    # Encodage du ping en utilisant l'algorithme de hachage SHA256
+    encoded_ping = hashlib.sha256(ping.encode()).digest()
+
+    # Conversion de l'encodage en base64 pour stockage sur la carte mémoire
+    encoded_ping_base64 = base64.b64encode(encoded_ping).decode()
+
+    return encoded_ping_base64
+
+def decode_ping(encoded_ping_base64):
+    # Décodage de l'encodage base64 pour récupérer le ping d'origine
+    encoded_ping = base64.b64decode(encoded_ping_base64)
+
+    # Décodage du ping en utilisant l'algorithme de hachage SHA256
+    ping = hashlib.sha256(encoded_ping).hexdigest()
+
+    return ping
+
+def mine():
+    # Logique de minage interne du site
+    # ...
+
+# Exemple d'utilisation
+ping = "Hello, world!"
+encoded_ping = encode_ping(ping)
+print("Ping encodé:", encoded_ping)
+
+decoded_ping = decode_ping(encoded_ping)
+print("Ping décodé:", decoded_ping)
+
+mine()
+
+# Exemple d'utilisation
+ping = "Hello, world!"
+encoded_ping = encode_ping(ping)
+print("Ping encodé:", encoded_ping)
+
+decoded_ping = decode_ping(encoded_ping)
+print("Ping décodé:", decoded_ping)
+
+mine()
+
+def roulette_game():
+    # Générer un point aléatoire sur le clavier azerty
+    random_point = random.choice("azertyuiopqsdfghjklmwxcvbn")
+    return random_point
+
+
+# Exemple d'utilisation
+ping = "Hello, world!"
+encoded_ping = encode_ping(ping)
+print("Ping encodé:", encoded_ping)
+decoded_ping = decode_ping(encoded_ping)
+print("Ping décodé:", decoded_ping)
+mine()
+
+
+# Generate a series of ping numbers on the roulette
+for _ in range(10):
+    random_point = roulette_game()
+    print("Point aléatoire sur le clavier azerty:", random_point)
+
+    # Transfert de crypto avec le ping
+    def transfer_crypto(ping):
+        encoded_ping = encode_ping(ping)
+        decoded_ping = decode_ping(encoded_ping)
+        mine()
+        random_point = roulette_game()
+        return encoded_ping, decoded_ping, random_point
+
+    # Exemple d'utilisation
+    ping = "Hello, world!"
+    encoded_ping, decoded_ping, random_point = transfer_crypto(ping)
+    print("Ping encodé:", encoded_ping)
+    print("Ping décodé:", decoded_ping)
+    print("Point aléatoire sur le clavier azerty:", random_point)
