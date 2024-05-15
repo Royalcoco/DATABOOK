@@ -1,6 +1,9 @@
 import hashlib
 import base64
 import random
+import zipfile
+import cv2
+import numpy as np
 
 def encode_ping(ping):
     # Encodage du ping en utilisant l'algorithme de hachage SHA256
@@ -78,3 +81,227 @@ for _ in range(10):
     print("Ping encodé:", encoded_ping)
     print("Ping décodé:", decoded_ping)
     print("Point aléatoire sur le clavier azerty:", random_point)
+    
+    mine()
+    def transfer_to_zip(encoded_ping, decoded_ping, random_point, zip_file):
+        # Ajouter les informations de ping et de crypto au fichier zip
+        zip_file.writestr("encoded_ping.txt", encoded_ping)
+        zip_file.writestr("decoded_ping.txt", decoded_ping)
+        zip_file.writestr("random_point.txt", random_point)
+
+    # Exemple d'utilisation
+    ping = "Hello, world!"
+    encoded_ping, decoded_ping, random_point = transfer_crypto(ping)
+
+    # Créer un nouveau fichier zip
+    zip_file_name = "crypto_data.zip"
+    with zipfile.ZipFile(zip_file_name, "w") as zip_file:
+        # Transférer les informations de ping et de crypto dans le fichier zip
+        transfer_to_zip(encoded_ping, decoded_ping, random_point, zip_file)
+
+    print("Données de crypto transférées avec succès dans le fichier zip:", zip_file_name)
+    
+    def create_video_from_folder(folder_path, output_path):
+        # Créer une liste des images dans le dossier
+        image_files = sorted(glob.glob(folder_path + '/*.jpg'))
+
+        # Créer une liste vide pour stocker les images modifiées
+        modified_images = []
+
+        # Parcourir chaque image dans le dossier
+        for image_file in image_files:
+            # Charger l'image
+            image = cv2.imread(image_file)
+
+            # Appliquer le contraste aux couleurs de l'image
+            modified_image = cv2.convertScaleAbs(image, alpha=2.0, beta=0)
+
+            # Ajouter l'image modifiée à la liste
+            modified_images.append(modified_image)
+
+        # Créer une vidéo à partir des images modifiées
+        height, width, _ = modified_images[0].shape
+        fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+        video_writer = cv2.VideoWriter(output_path, fourcc, 30.0, (width, height))
+
+        for modified_image in modified_images:
+            video_writer.write(modified_image)
+
+        # Fermer le vidéo writer
+        video_writer.release()
+
+    # Exemple d'utilisation
+    folder_path = "path/to/folder"
+    output_path = "path/to/output/video.mp4"
+    create_video_from_folder(folder_path, output_path)
+    print("Vidéo créée avec succès:", output_path)
+    
+    def decode_video(video_path):
+        # Charger la vidéo
+        video_capture = cv2.VideoCapture(video_path)
+
+        # Créer une liste vide pour stocker les images de la vidéo
+        video_images = []
+
+        # Lire chaque image de la vidéo
+        while video_capture.isOpened():
+            ret, frame = video_capture.read()
+
+            if not ret:
+                break
+
+            # Ajouter l'image à la liste
+            video_images.append(frame)
+
+        # Fermer la capture vidéo
+        video_capture.release()
+
+        return video_images
+    
+    # Exemple d'utilisation
+    video_path = "path/to/video.mp4"
+    video_images = decode_video(video_path)
+    print("Images extraites de la vidéo:", video_images)
+    
+    def create_video_from_images(video_images, output_path):
+        # Créer une vidéo à partir des images
+        height, width, _ = video_images[0].shape
+        fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+        video_writer = cv2.VideoWriter(output_path, fourcc, 30.0, (width, height))
+
+        for video_image in video_images:
+            video_writer.write(video_image)
+
+        # Fermer le vidéo writer
+        video_writer.release()
+        
+    # Exemple d'utilisation
+    video_path = "path/to/video.mp4"
+    video_images = decode_video(video_path)
+    output_path = "path/to/output/video.mp4"
+    create_video_from_images(video_images, output_path)
+    print("Vidéo créée avec succès à partir des images extraites:", output_path)
+    
+    def encode_image(image):
+        # Encodage de l'image en utilisant l'algorithme de hachage SHA256
+        encoded_image = hashlib.sha256(image).digest()
+
+        # Conversion de l'encodage en base64 pour stockage sur la carte mémoire
+        encoded_image_base64 = base64.b64encode(encoded_image).decode()
+
+        return encoded_image_base64
+    
+    def decode_image(encoded_image_base64):
+        # Décodage de l'encodage base64 pour récupérer l'image d'origine
+        encoded_image = base64.b64decode(encoded_image_base64)
+
+        # Décodage de l'image en utilisant l'algorithme de hachage SHA256
+        image = hashlib.sha256(encoded_image).digest()
+
+        return image
+    
+    def transfer_image_to_zip(image, zip_file):
+        # Encodage de l'image
+        encoded_image = encode_image(image)
+
+        # Ajouter l'image encodée au fichier zip
+        zip_file.writestr("encoded_image.txt", encoded_image)
+        
+    # Exemple d'utilisation
+    image = cv2.imread("path/to/image.jpg")
+    zip_file_name = "image_data.zip"
+    with zipfile.ZipFile(zip_file_name, "w") as zip_file:
+        transfer_image_to_zip(image, zip_file)
+        
+    print("Image transférée avec succès dans le fichier zip:", zip_file_name)
+
+    def decode_image_from_zip(zip_file_name):
+        # Extraire l'image encodée du fichier zip
+        with zipfile.ZipFile(zip_file_name, "r") as zip_file:
+            encoded_image = zip_file.read("encoded_image.txt")
+
+        # Décodage de l'image
+        image = decode_image(encoded_image)
+
+        return image
+    
+    # Exemple d'utilisation
+    zip_file_name = "image_data.zip"
+    image = decode_image_from_zip(zip_file_name)
+    cv2.imwrite("decoded_image.jpg", image)
+    print("Image extraite avec succès du fichier zip:", "decoded_image.jpg")
+    
+    def create_image_from_array(image_array, output_path):
+        # Créer une image à partir du tableau d'images
+        cv2.imwrite(output_path, image_array)
+        
+    # Exemple d'utilisation
+    image = cv2.imread("path/to/image.jpg")
+    encoded_image = encode_image(image)
+    decoded_image = decode_image(encoded_image)
+    create_image_from_array(decoded_image, "output_image.jpg")
+    print("Image créée avec succès à partir du tableau d'images:", "output_image.jpg")
+
+    def encode_video(video_images):
+        # Encodage de la vidéo en utilisant l'algorithme de hachage SHA256
+        encoded_video = hashlib.sha256(video_images).digest()
+
+        # Conversion de l'encodage en base64 pour stockage sur la carte mémoire
+        encoded_video_base64 = base64.b64encode(encoded_video).decode()
+
+        return encoded_video_base64
+
+    def decode_video(encoded_video_base64):
+        # Décodage de l'encodage base64 pour récupérer la vidéo d'origine
+        encoded_video = base64.b64decode(encoded_video_base64)
+
+        # Décodage de la vidéo en utilisant l'algorithme de hachage SHA256
+        video = hashlib.sha256(encoded_video).digest()
+
+        return video
+    
+    def transfer_video_to_zip(video_images, zip_file):
+        # Encodage de la vidéo
+        encoded_video = encode_video(video_images)
+
+        # Ajouter la vidéo encodée au fichier zip
+        zip_file.writestr("encoded_video.txt", encoded_video)
+        
+    # Exemple d'utilisation
+    video_path = "path/to/video.mp4"
+    video_images = decode_video(video_path)
+    zip_file_name = "video_data.zip"
+    with zipfile.ZipFile(zip_file_name, "w") as zip_file:
+        transfer_video_to_zip(video_images, zip_file)
+        
+    print("Vidéo transférée avec succès dans le fichier zip:", zip_file_name)
+    
+    def decode_video_from_zip(zip_file_name):
+        # Extraire la vidéo encodée du fichier zip
+        with zipfile.ZipFile(zip_file_name, "r") as zip_file:
+            encoded_video = zip_file.read("encoded_video.txt")
+
+        # Décodage de la vidéo
+        video = decode_video(encoded_video)
+
+        return video
+
+    # Exemple d'utilisation
+    zip_file_name = "video_data.zip"
+    video = decode_video_from_zip(zip_file_name)
+    create_video_from_images(video, "decoded_video.mp4")
+    print("Vidéo extraite avec succès du fichier zip:", "decoded_video.mp4")
+    
+    def create_video_from_array(video_array, output_path):
+        # Créer une vidéo à partir du tableau de vidéos
+        height, width, _ = video_array[0].shape
+        fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+        video_writer = cv2.VideoWriter(output_path, fourcc, 30.0, (width, height))
+
+        for video_image in video_array:
+            video_writer.write(video_image)
+
+        # Fermer le vidéo writer
+        video_writer.release()
+        
+    # Exemple d'utilisation
