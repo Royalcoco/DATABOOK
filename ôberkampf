@@ -1,0 +1,337 @@
+class Router:
+    def __init__(self):
+        self.rooms = {}
+
+    def create_room(self, room_id):
+        if room_id not in self.rooms:
+            self.rooms[room_id] = []
+
+    def join_room(self, room_id, user_id):
+        if room_id in self.rooms:
+            self.rooms[room_id].append(user_id)
+        else:
+            print("La salle de discussion n'existe pas.")
+
+    def leave_room(self, room_id, user_id):
+        if room_id in self.rooms:
+            if user_id in self.rooms[room_id]:
+                self.rooms[room_id].remove(user_id)
+            else:
+                print("L'utilisateur n'est pas dans cette salle de discussion.")
+        else:
+            print("La salle de discussion n'existe pas.")
+
+    def get_room_members(self, room_id):
+        if room_id in self.rooms:
+            return self.rooms[room_id]
+        else:
+            print("La salle de discussion n'existe pas.")
+
+# Exemple d'utilisation
+router = Router()
+
+# Créer une salle de discussion
+router.create_room("salle1")
+
+# Rejoindre une salle de discussion
+router.join_room("salle1", "utilisateur1")
+router.join_room("salle1", "utilisateur2")
+
+# Quitter une salle de discussion
+router.leave_room("salle1", "utilisateur1")
+
+# Obtenir les membres d'une salle de discussion
+members = router.get_room_members("salle1")
+print(members)
+# ['utilisateur2']
+
+# Quitter une salle de discussion qui n'existe pas
+router.leave_room("salle2", "utilisateur1")
+# La salle de discussion n'existe pas.
+
+class MoneyExchangeRouter(Router):
+    def __init__(self):
+        super().__init__()
+        self.money_routes = {}
+
+    def create_money_route(self, route_id):
+        if route_id not in self.money_routes:
+            self.money_routes[route_id] = []
+
+    def join_money_route(self, route_id, user_id):
+        if route_id in self.money_routes:
+            self.money_routes[route_id].append(user_id)
+        else:
+            print("La route de monnaie n'existe pas.")
+
+    def leave_money_route(self, route_id, user_id):
+        if route_id in self.money_routes:
+            if user_id in self.money_routes[route_id]:
+                self.money_routes[route_id].remove(user_id)
+            else:
+                print("L'utilisateur n'est pas dans cette route de monnaie.")
+        else:
+            print("La route de monnaie n'existe pas.")
+
+    def get_money_route_members(self, route_id):
+        if route_id in self.money_routes:
+            return self.money_routes[route_id]
+        else:
+            print("La route de monnaie n'existe pas.")
+
+# Exemple d'utilisation
+money_router = MoneyExchangeRouter()
+# Créer une route de monnaie
+money_router.create_money_route("route1")
+# Rejoindre une route de monnaie
+money_router.join_money_route("route1", "utilisateur1")
+money_router.join_money_route("route1", "utilisateur2")
+# Quitter une route de monnaie
+money_router.leave_money_route("route1", "utilisateur1")
+# Obtenir les membres d'une route de monnaie
+members = money_router.get_money_route_members("route1")
+print(members)
+# ['utilisateur2']
+# Quitter une route de monnaie qui n'existe pas
+money_router.leave_money_route("route2", "utilisateur1")
+# La route de monnaie n'existe pas.
+
+class ChatRoomRouter(Router):
+    def __init__(self):
+        super().__init__()
+        self.prices = {}
+    def update_price(self, room_id, price_change):
+        if room_id in self.rooms:
+            if room_id in self.prices:
+                self.prices[room_id] += price_change
+            else:
+                self.prices[room_id] = price_change
+        else:
+            print("La salle de discussion n'existe pas.")
+    def get_room_price(self, room_id):
+        if room_id in self.rooms:
+            if room_id in self.prices:
+                return self.prices[room_id]
+            else:
+                return 0
+        else:
+            print("La salle de discussion n'existe pas.")
+
+# Exemple d'utilisation
+chat_router = ChatRoomRouter()
+# Créer une salle de discussion
+chat_router.create_room("salle2")
+# Rejoindre une salle de discussion
+chat_router.join_room("salle2", "utilisateur1")
+chat_router.join_room("salle2", "utilisateur2")
+# Mettre à jour le prix de la salle de discussion
+chat_router.update_price("salle2", 10)
+# Obtenir le prix de la salle de discussion
+price = chat_router.get_room_price("salle2")
+print(price)
+# 10
+# Quitter une salle de discussion
+chat_router.leave_room("salle2", "utilisateur1")
+# Mettre à jour le prix de la salle de discussion
+chat_router.update_price("salle2", -5)
+# Obtenir le prix de la salle de discussion
+price = chat_router.get_room_price("salle2")
+print(price)
+# 5
+# Quitter une salle de discussion qui n'existe pas
+chat_router.leave_room("salle3", "utilisateur1")
+# La salle de discussion n'existe pas.
+
+# Faire sortir chaque membre de la salle de discussion
+for room_id in router.rooms:
+    members = router.get_room_members(room_id)
+    for member in members:
+        router.leave_room(room_id, member)
+
+# Sceller le minage
+money_router.create_money_route("minage")
+money_router.join_money_route("minage", "utilisateur1")
+money_router.join_money_route("minage", "utilisateur2")
+money_router.leave_money_route("minage", "utilisateur1")
+money_router.leave_money_route("minage", "utilisateur2")
+
+# Fermer la salle de discussion
+chat_router.create_room("salle3")
+chat_router.join_room("salle3", "utilisateur1")
+chat_router.join_room("salle3", "utilisateur2")
+chat_router.update_price("salle3", 10)
+chat_router.leave_room("salle3", "utilisateur1")
+chat_router.update_price("salle3", -5)
+chat_router.leave_room("salle3", "utilisateur2")
+chat_router.get_room_price("salle3")
+# La salle de discussion n'existe pas.
+
+# Vérifier les membres de la salle de discussion
+print(router.rooms)
+# {}
+# Vérifier les membres de la route de monnaie
+print(money_router.money_routes)
+# {}
+# Vérifier les prix de la salle de discussion
+print(chat_router.prices)
+# {}
+class BankRoomRouter(Router):
+    def __init__(self):
+        super().__init__()
+        self.bank_accounts = {}
+    def create_bank_room(self, room_id):
+        if room_id not in self.rooms:
+            self.rooms[room_id] = []
+            self.bank_accounts[room_id] = {}
+    def join_bank_room(self, room_id, user_id, account_number):
+        if room_id in self.rooms:
+            self.rooms[room_id].append(user_id)
+            if user_id not in self.bank_accounts[room_id]:
+                self.bank_accounts[room_id][user_id] = account_number
+            else:
+                print("L'utilisateur a déjà un compte bancaire dans cette salle.")
+        else:
+            print("La salle de discussion n'existe pas.")
+    def leave_bank_room(self, room_id, user_id):
+        if room_id in self.rooms:
+            if user_id in self.rooms[room_id]:
+                self.rooms[room_id].remove(user_id)
+                if user_id in self.bank_accounts[room_id]:
+                    del self.bank_accounts[room_id][user_id]
+            else:
+                print("L'utilisateur n'est pas dans cette salle de discussion.")
+        else:
+            print("La salle de discussion n'existe pas.")
+    def get_bank_room_members(self, room_id):
+        if room_id in self.rooms:
+            return self.rooms[room_id]
+        else:
+            print("La salle de discussion n'existe pas.")
+    def get_user_account_number(self, room_id, user_id):
+        if room_id in self.rooms:
+            if user_id in self.bank_accounts[room_id]:
+                return self.bank_accounts[room_id][user_id]
+            else:
+                print("L'utilisateur n'a pas de compte bancaire dans cette salle.")
+        else:
+            print("La salle de discussion n'existe pas.")
+            
+            def close_bank_account(self, room_id, user_id):
+                if room_id in self.rooms:
+                    if user_id in self.bank_accounts[room_id]:
+                        del self.bank_accounts[room_id][user_id]
+                        print("Compte bancaire fermé avec succès.")
+                    else:
+                        print("L'utilisateur n'a pas de compte bancaire dans cette salle.")
+                else:
+                    print("La salle de discussion n'existe pas.")
+                    
+            def update_room_price(self, room_id, price_change):
+                if room_id in self.rooms:
+                    if room_id in self.prices:
+                        self.prices[room_id] += price_change
+                    else:
+                        self.prices[room_id] = price_change
+                else:
+                    print("La salle de discussion n'existe pas.")
+                    def open_message_exchange_port(self, port_number):
+                        print(f"Port {port_number} ouvert pour l'échange de messages.")
+                        # Code pour ouvrir le port de réception sur le bluetooth et gérer l'échange de messages
+
+                        # Code pour crypter les messages reçus
+                        def encrypt_message(message):
+                            # Code de cryptage ici
+                            encrypted_message = message  # Placeholder, à remplacer par le code de cryptage réel
+                            return encrypted_message
+
+                        # Code pour décrypter les messages reçus
+                        def decrypt_message(encrypted_message):
+                            # Code de décryptage ici
+                            decrypted_message = encrypted_message  # Placeholder, à remplacer par le code de décryptage réel
+                            return decrypted_message
+
+                        # Code pour gérer l'échange de messages
+                        def message_exchange():
+                            while True:
+                                # Code pour recevoir un message
+                                received_message = receive_message()  # Placeholder, à remplacer par le code de réception réel
+
+                                # Code pour décrypter le message reçu
+                                decrypted_message = decrypt_message(received_message)
+
+                                # Code pour traiter le message reçu
+                                process_message(decrypted_message)
+
+                                # Code pour envoyer une réponse
+                                response_message = create_response()  # Placeholder, à remplacer par le code de création de réponse réel
+
+                                # Code pour crypter la réponse
+                                encrypted_response = encrypt_message(response_message)
+
+                                # Code pour envoyer la réponse
+                                send_message(encrypted_response)  # Placeholder, à remplacer par le code d'envoi réel
+
+                        # Code pour effectuer une transaction à la fin de l'échange de messages
+                        def perform_transaction():
+                            # Code pour effectuer la transaction
+                            transaction_result = perform_transaction_logic()  # Placeholder, à remplacer par le code de transaction réel
+
+                            # Code pour afficher le résultat de la transaction
+                            print(f"Résultat de la transaction : {transaction_result}")
+
+                        # Appel des fonctions pour gérer l'échange de messages et effectuer la transaction
+                        message_exchange()
+                        perform_transaction()
+                        # Fermer le port de réception sur le bluetooth
+                        def close_message_exchange_port(port_number):
+                            print(f"Port {port_number} fermé pour l'échange de messages.")
+                            # Code pour fermer le port de réception sur le bluetooth
+
+                        # Garder la transaction ouverte sur des données en cours
+                        def keep_transaction_open():
+                            # Code pour garder la transaction ouverte sur des données en cours
+                            pass
+
+                        # Appel des fonctions pour fermer le port de réception et garder la transaction ouverte
+                        close_message_exchange_port(port_number)
+                        keep_transaction_open()
+                        # Ouvrir le port d'émission sur le bluetooth
+                        def open_message_emit_port(port_number):
+                            # Code pour crypter les messages à envoyer
+                            
+                            # Code pour envoyer le signal de transaction financière
+                            def send_transaction_signal():
+                                # Code pour envoyer le signal de transaction financière
+                                
+                            # Appel de la fonction pour envoyer le signal de transaction financière
+                            send_transaction_signal()
+                            
+                            # Fermer le port d'émission sur le bluetooth
+                            def close_message_emit_port(port_number):
+                                # Code pour fermer le port d'émission sur le bluetooth
+                                
+                            # Garder la transaction ouverte sur des données en cours
+                            def keep_transaction_open():
+                                # Code pour garder la transaction ouverte sur des données en cours
+                                
+                            # Appel des fonctions pour fermer le port d'émission et garder la transaction ouverte
+                            close_message_emit_port(port_number)
+                            keep_transaction_open()
+                            
+                        # Appel de la fonction pour ouvrir le port d'émission sur le bluetooth
+                        open_message_emit_port(port_number)
+                        # Fermer l'application Bluetooth avec un envoi dans l'application appropriée d'un message d'envoi de la transaction à H+L
+                        def close_bluetooth_application():
+                            # Envoyer le message d'envoi de la transaction à
+                            message = "Transaction envoyée à ".format_map(self.bank_accounts[room_id])"
+                            print(message)
+                            
+                            # Code pour envoyer le message à l'application appropriée
+                            # ...
+                            # Fermer l'application Bluetooth
+                            # Code pour fermer l'application Bluetooth
+                            # ...
+                            
+                        # Appel de la fonction pour fermer l'application Bluetooth
+                        close_bluetooth_application()
+                        
