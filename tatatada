@@ -6,6 +6,8 @@ import shutil
 import socket
 import statistics
 import shutil
+import random
+import os
 
 
 # Créer une nouvelle image
@@ -220,4 +222,26 @@ for shade, color in color_palette.items():
             os.system(command)
             # Open the folder without compression
             shutil.unpack_archive('ping_data.zip', 'uncompressed_ping_data')
+            # Generate a random key
+            random_key = random.choice(list(key.keys()))
+
+            # Create a copy of the key image
+            key_copy = key_image.copy()
+
+            # Save the key copy as a JPEG file
+            key_copy.save('key_copy.jpeg')
+
+            # Define the data center path
+            data_center_path = '/path/to/data/center'
+
+            # Move the key copy to the data center
+            shutil.move('key_copy.jpeg', os.path.join(data_center_path, 'key_copy.jpeg'))
+            # Generate a random key
+            random_key = random.choice(list(key.keys()))
+            
+            # Create a copy of the key image
+            key_copy = key_image.copy()
+            
+            # Save the key copy as a JPEG file
+            key_copy.save('key_copy.jpeg')
             
