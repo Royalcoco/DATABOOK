@@ -1,0 +1,90 @@
+import hashlib
+import datetime
+import random
+import zipfile
+
+# Fonction pour calculer le hash d'un fichier
+def calculate_file_hash(file_path):
+    hash_object = hashlib.sha256()
+    with open(file_path, 'rb') as file:
+        for chunk in iter(lambda: file.read(4096), b""):
+            hash_object.update(chunk)
+    return hash_object.hexdigest()
+
+# Fonction pour partager un fichier sur le routeur actif
+def share_file(file_path, recipient_address):
+    # Calculer le hash du fichier
+    file_hash = calculate_file_hash(file_path)
+
+    # Envoyer le hash du fichier au destinataire via le protocole de blockchain
+    blockchain_protocol.send_file_hash(file_hash, recipient_address)
+
+    # Transférer le fichier au destinataire via le routeur actif
+    router_protocol.transfer_file(file_path, recipient_address)
+
+# Exemple d'utilisation
+file_path = 'chemin/vers/le/fichier.txt'
+recipient_address = 'adresse_du_destinataire'
+
+share_file(file_path, recipient_address)
+# Fonction pour décentraliser le partage sur une clé du routeur
+def decentralize_share(file_path, recipient_address, router_key):
+    # Calculer le hash du fichier
+    file_hash = calculate_file_hash(file_path)
+    # Obtenir la date et l'heure actuelles
+    current_datetime = datetime.datetime.now()
+    # Obtenir le poids moyen du fichier
+    file_size = os.path.getsize(file_path)
+    average_file_size = file_size / 1024  # Convert to kilobytes
+    # Calculer le ping en utilisant le poids moyen du fichier
+    ping = average_file_size / router_key
+    # Envoyer le hash du fichier, la date et l'heure, et le ping au destinataire via le protocole de blockchain
+    blockchain_protocol.send_file_info(file_hash, current_datetime, ping, recipient_address)
+    # Transférer le fichier au destinataire via le routeur actif
+    router_protocol.transfer_file(file_path, recipient_address)
+
+# Exemple d'utilisation
+file_path = 'chemin/vers/le/fichier.txt'
+recipient_address = 'adresse_du_destinataire'
+router_key = 10  # Clé du routeur
+decentralize_share(file_path, recipient_address, router_key)
+# Fonction pour envoyer la clé de manière aléatoire
+def send_key_randomly(router_key, recipient_address):
+    # Générer une date et heure aléatoire
+    random_datetime = datetime.datetime.now() + datetime.timedelta(days=random.randint(1, 30))
+    # Générer un ping aléatoire en multipliant le ping moyen par 2
+    random_ping = average_file_size / (router_key * 2)
+    # Envoyer la clé, la date et l'heure aléatoire, et le ping aléatoire au destinataire via le protocole de blockchain
+    blockchain_protocol.send_key_info(router_key, random_datetime, random_ping, recipient_address)
+
+# Adapter le fichier compressé avec une ouverture en mode lecture
+def adapt_compressed_file(file_path):
+    with zipfile.ZipFile(file_path, 'r') as zip_file:
+        # Lire le contenu du fichier compressé
+        file_content = zip_file.read()
+        # Faire des opérations sur le contenu du fichier
+        # ...
+        # Retourner le contenu adapté
+        return file_content
+
+# Exemple d'utilisation
+file_path = 'chemin/vers/le/fichier.zip'
+recipient_address = 'adresse_du_destinataire'
+router_key = 10  # Clé du routeur
+
+send_key_randomly(router_key, recipient_address)
+adapted_content = adapt_compressed_file(file_path)
+# Utiliser le contenu adapté
+# ...
+# Fonction pour recevoir le contenu du destinataire en décrypté
+def receive_decrypted_content(content):
+    # Faire des opérations de décryptage sur le contenu
+    decrypted_content = decrypt_content(content)
+    
+    # Retourner le contenu décrypté
+    return decrypted_content
+
+# Exemple d'utilisation
+decrypted_content = receive_decrypted_content(adapted_content)
+# Utiliser le contenu décrypté
+# ...
