@@ -1,5 +1,11 @@
 from PIL import Image, ImageDraw, ImageFont
 import shutil
+import lculate_average_ping_time from lculate_average_ping_time
+from encrypt_decrypt import encrypt_colorimetry, decrypt_colorimetry, encrypt_spectrum, decrypt_spectrum
+import shutil
+import socket
+import statistics
+
 
 # Créer une nouvelle image
 image = Image.new('RGB', (800, 800), color='white')
@@ -92,4 +98,120 @@ print(f"The compressed folder is {reduction_percentage:.2f}% smaller than the or
 key = {}
 for shade, color in color_palette.items():
     key[color] = shade
-    
+    # Calculate the average ping time
+    average_ping_time = calculate_average_ping_time()
+
+    # Define the maximum acceptable ping time as a constant
+    MAX_PING_TIME = 100  # milliseconds
+
+    # Check if the average ping time exceeds the maximum acceptable ping time
+    if average_ping_time > MAX_PING_TIME:
+        print("The average ping time exceeds the maximum acceptable ping time.")
+    else:
+        print("The average ping time is within the acceptable range.")
+        # Compress the ping data into a folder
+        shutil.make_archive('ping_data', 'zip', '.', 'ping_data')
+        # Compare the size of each folder
+        original_size = shutil.disk_usage('.').used
+        compressed_size = shutil.disk_usage('ping_data.zip').used
+        
+        # Calculate the reduction in size
+        reduction_percentage = (original_size - compressed_size) / original_size * 100
+        
+        # Print the reduction percentage
+        print(f"The compressed folder is {reduction_percentage:.2f}% smaller than the original folder.")
+        # Compare the size of each folder
+        original_size = shutil.disk_usage('.').used
+        compressed_size = shutil.disk_usage('encrypted_nft_data.zip').used
+        
+        # Calculate the reduction in size
+        reduction_percentage = (original_size - compressed_size) / original_size * 100
+        
+        # Print the reduction percentage
+        print(f"The compressed folder is {reduction_percentage:.2f}% smaller than the original folder.")
+        # Compare the size of each folder
+        original_size = shutil.disk_usage('.').used
+        compressed_size = shutil.disk_usage('ping_data.zip').used
+        # Integrate the constant pi as the ping recipient without the file folder
+        ping_recipient = 3.14159
+        # Integrate the constant pi as the ping recipient with the file folder
+        ping_recipient = 3.14159
+        # Integrate the constant pi as the ping recipient with the file folder
+        ping_recipient = 3.14159
+        # Send the ping recipient without the compressed folder to the ping stream
+        ping_stream.send(ping_recipient)
+
+        # Receive the next ping from the search engine
+        next_ping = search_engine.receive_ping()
+
+        # Process the next ping
+        process_ping(next_ping)
+        # Send the ping recipient with the compressed folder to the ping stream
+        ping_stream.send(ping_recipient)
+        # Send the ping recipient with the compressed folder to the ping stream
+        ping_stream.send(ping_recipient)
+        # Receive the next ping from the search engine
+        next_ping = search_engine.receive_ping()
+        # Process the next ping
+        process_ping(next_ping)
+        # Send the ping recipient with the compressed folder to the ping stream
+        ping_stream.send(ping_recipient)
+        # Send the ping recipient with the compressed folder to the ping stream
+        ping_stream.send(ping_recipient)
+        # Function to calculate the average ping time
+        def calculate_average_ping_time():
+            # Define the target host
+            host = "www.google.com"
+            # Define the number of pings to send
+            num_pings = 5
+            # Create a list to store the ping times
+            ping_times = []
+            # Send the pings and calculate the round-trip time
+            for _ in range(num_pings):
+                try:
+                    # Create a socket object
+                    client_socket = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_ICMP)
+                    # Set the timeout for receiving the response
+                    client_socket.settimeout(1)
+                    # Send the ping request
+                    client_socket.sendto(b'', (host, 0))
+                    # Record the start time
+                    start_time = time.time()
+                    # Receive the response
+                    _, _ = client_socket.recvfrom(1024)
+                    # Record the end time
+                    end_time = time.time()
+                    # Calculate the round-trip time
+                    round_trip_time = (end_time - start_time) * 1000
+                    # Add the round-trip time to the list
+                    ping_times.append(round_trip_time)
+                    # Close the socket
+                    client_socket.close()
+                except socket.timeout:
+                    # Handle the timeout error
+                    print("Ping request timed out.")
+            # Calculate the average ping time
+            average_ping_time = statistics.mean(ping_times)
+            return average_ping_time
+
+        # Define the maximum acceptable ping time as a constant
+        MAX_PING_TIME = 100  # milliseconds
+
+        # Check if the average ping time exceeds the maximum acceptable ping time
+        average_ping_time = calculate_average_ping_time()
+        if average_ping_time > MAX_PING_TIME:
+            print("The average ping time exceeds the maximum acceptable ping time.")
+        else:
+            print("The average ping time is within the acceptable range.")
+            # Compress the ping data into a folder
+            shutil.make_archive('ping_data', 'zip', '.', 'ping_data')
+            # Compare the size of each folder
+            original_size = shutil.disk_usage('.').used
+            compressed_size = shutil.disk_usage('ping_data.zip').used
+            # Calculate the reduction in size
+            reduction_percentage = (original_size - compressed_size) / original_size * 100
+            # Print the reduction percentage
+            print(f"The compressed folder is {reduction_percentage:.2f}% smaller than the original folder.")
+        next_ping = search_engine.receive_ping()
+        # Process the next ping
+        
