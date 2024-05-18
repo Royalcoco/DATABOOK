@@ -486,4 +486,9 @@ def computing_engine_4(computing_engine):
     # Code for the fourth computing engine
     pass
 
-# Example usage
+            password = request.json.get('password')
+            if password == 'my_password':
+                # Code to process the cryptocurrency transaction
+                return {'message': 'Transaction processed successfully'}
+            else:
+                return {'error': 'Invalid password'}, 401
