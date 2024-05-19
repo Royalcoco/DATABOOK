@@ -21,6 +21,9 @@ import tools.stats as stats
 import random
 import os
 import qrcode
+import random
+import qrcode
+from scipy import stats
 # Read the video file
 video = cv2.VideoCapture('path/to/video.mp4')
 
@@ -558,103 +561,96 @@ while True:
         numbers = [1, 2, 3, 4, 5, 3]
         mode = statistics.mode(numbers)
         # Calculate the variance of a list of numbers
-        numbers = [1, 2, 3, 4, 5]
-        variance = statistics.variance(numbers)
-        # Calculate the skewness of a list of numbers
+        def encrypt_colorimetry(data, key):
+            # Implement the encryption logic here
+            pass
+
+        def send_ping(ping):
+            # Implement the logic to send the ping to the server
+            pass
+
+        def send_message(message, recipient):
+            # Implement the logic to send the message to the recipient
+            pass
+
+        def attach_image_to_email(image_path, recipient):
+            # Implement the logic to attach the image to the email for the recipient
+            pass
+
+        def send_vocal_message(message, recipient):
+            # Implement the logic to send the vocal message to the recipient
+            pass
+
+        def perform_investment(nft_reference, investment_limit):
+            # Implement the logic to perform the investment in the NFT
+            pass
+
+        def display_error_message(message):
+            # Implement the logic to display the error message
+            pass
+
         numbers = [1, 2, 3, 4, 5]
         skewness = stats.skew(numbers)
-        # Calculate the kurtosis of a list of numbers
-        numbers = [1, 2, 3, 4, 5]
         kurtosis = stats.kurtosis(numbers)
-        # Calculate the entropy of a list of numbers
-        numbers = [1, 2, 3, 4, 5]
         entropy = stats.entropy(numbers)
-        # Calculate the autocorrelation of a list of numbers
-        numbers = [1, 2, 3, 4, 5]
         autocorrelation = stats.autocorrelation(numbers)
-        # Calculate the cross-correlation of two lists of numbers
+
         ping_key = 'shared_key'
         encrypted_ping = encrypt_colorimetry(ping_latency, ping_key)
-        # Send the encrypted ping to the server
         send_ping(encrypted_ping)
-        # Continue with the rest of the code...
-        # Place your code for NFT reference and message sending here
-        # For example:
+
         nft_reference = 'NFT123'
         message = 'Hello, I have received the NFT with reference {}'.format(nft_reference)
         send_message(message)
-        # Generate a random number
+
         random_number = random.randint(1, 100)
-        # Send a message to all recipients
         recipients = ['recipient1@example.com', 'recipient2@example.com', 'recipient3@example.com']
         message = 'Transaction completed successfully! 3% has been deducted from your account as miner\'s fee.'
         for recipient in recipients:
             send_message(message, recipient)
 
-        # Generate a QR code for the transaction
         transaction_data = 'Transaction details'
         transaction_qr_code = qrcode.make(transaction_data)
-        # Save the transaction QR code as an image file
         transaction_qr_code_path = 'path/to/transaction_qr_code.png'
         transaction_qr_code.save(transaction_qr_code_path)
 
-        # Generate a QR code for the miner
         miner_data = 'Miner details'
-        miner_qr_code = qrcode.make(miner_data)attach_image_to_email(qr_code_path, recipient)
-        # Save the miner QR code as an image file
+        miner_qr_code = qrcode.make(miner_data)
         miner_qr_code_path = 'path/to/miner_qr_code.png'
         miner_qr_code.save(miner_qr_code_path)
 
-        # Attach the transaction QR code image to the email for transaction recipients
         for recipient in recipients:
             attach_image_to_email(transaction_qr_code_path, recipient)
 
-        # Attach the miner QR code image to the email for miners
         for miner in miners:
             attach_image_to_email(miner_qr_code_path, miner)
-transaction_data = 'Transaction details'
-qr_code = qrcode.make(transaction_data)
 
-# Save the QR code as an image file
-qr_code_path = 'path/to/qr_code.png'
-qr_code.save(qr_code_path)
+        qr_code = qrcode.make(transaction_data)
+        qr_code_path = 'path/to/qr_code.png'
+        qr_code.save(qr_code_path)
 
-# Attach the QR code image to the email
-for recipient in recipients:
-    attach_image_to_email(qr_code_path, recipient)
-    # Attach the QR code image to the NFT
-    attach_image_to_email(qr_code_path, nft_recipient)
+        for recipient in recipients:
+            attach_image_to_email(qr_code_path, recipient)
+            attach_image_to_email(qr_code_path, nft_recipient)
+            attach_image_to_email(qr_code_path, transaction_recipient)
 
-    # Attach the QR code image to the transaction
-    attach_image_to_email(qr_code_path, transaction_recipient)
+        vocal_message = 'This is a secure blockchain transaction. Please scan the QR code to invest real money and earn 5% of the transaction amount.'
+        for recipient in recipients:
+            send_vocal_message(vocal_message, recipient)
 
-    # Generate a vocal message
-    vocal_message = 'This is a secure blockchain transaction. Please scan the QR code to invest real money and earn 5% of the transaction amount.'
-
-    # Send the vocal message to all QR code recipients
-    for recipient in recipients:
-        send_vocal_message(vocal_message, recipient)
-        # Generate a QR code for opening the HTML annex
         html_annex_data = 'HTML annex details'
         html_annex_qr_code = qrcode.make(html_annex_data)
-        # Save the HTML annex QR code as an image file
         html_annex_qr_code_path = 'path/to/html_annex_qr_code.png'
         html_annex_qr_code.save(html_annex_qr_code_path)
-        # Attach the HTML annex QR code image to the email
         attach_image_to_email(html_annex_qr_code_path, recipient)
 
-        # Set the investment limit to 1100 points
         investment_limit = 1100
-
-        # Calculate the total cost of the investment
         investment_cost = 1 * investment_limit
 
-        # Check if the user has enough currency to make the investment
         if user_currency >= investment_cost:
-            # Deduct the investment cost from the user's currency
             user_currency -= investment_cost
-            # Perform the investment in the NFT
             perform_investment(nft_reference, investment_limit)
+        else:
             # Continue with the rest of the code...
         else:
             # Display an error message to the user
