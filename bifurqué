@@ -1,5 +1,6 @@
 import random
 import requests
+import tkinter as tk
 
 # Liste de mots pour générer le NFT
 adjectifs = ['coloré', 'vibrant', 'unique', 'fantastique']
@@ -208,4 +209,70 @@ print(plateforme_html)
 # Fonction pour afficher la plateforme HTML
 def afficher_plateforme_html(plateforme_html):
     print(plateforme_html)
-    
+    # Fonction pour valider la somme des investissements
+    def valider_somme_investissements(somme_investissements):
+        # Code pour valider la somme des investissements
+        qr_code = generate_qr_code(somme_investissements)
+        afficher_qr_code(qr_code)
+        mineur_points = creer_mineur_points()
+        copie_nft = mineur_points.creer_copie_nft()
+        print(f"Investissement total du NFT : {somme_investissements}")
+        print(f"Copie du NFT pour chaque investissement : {copie_nft}")
+
+    # Appel de la fonction pour valider la somme des investissements
+    valider_somme_investissements(somme_points)
+# Afficher la plateforme HTML
+afficher_plateforme_html(plateforme_html)
+# Fonction pour créer un mineur de points
+def creer_mineur_points():
+    class MineurPoints:
+        def __init__(self):
+            self.points = 0
+
+        def creer_copie_nft(self):
+            self.points += 1
+            return f"Copie du NFT avec {self.points} points"
+
+    return MineurPoints()
+
+# Créer un mineur de points
+mineur_points = creer_mineur_points()
+# Créer une copie du NFT
+copie_nft = mineur_points.creer_copie_nft()
+print(copie_nft)
+# Fonction pour enregistrer la somme de points dans une bourse volatile
+def enregistrer_somme_points(somme_points):
+    # Code pour enregistrer la somme de points
+    bourse_volatile = BourseVolatile()
+    bourse_volatile.enregistrer_somme_points(somme_points)
+    print(f"Enregistrement de la somme de points : {somme_points}")
+    # Importer la bibliothèque pour l'interaction avec l'utilisateur
+
+    # Fonction pour afficher le NFT dans un environnement géré par une intelligence artificielle
+    def afficher_nft_dans_decor(nft):
+        # Code pour afficher le NFT dans un décor éphémère
+        print(f"Affichage du NFT dans un décor éphémère : {nft}")
+
+    # Fonction pour gérer l'environnement de l'IA
+    def gerer_environnement_ia():
+        # Créer une fenêtre tkinter
+        fenetre = tk.Tk()
+        fenetre.title("Environnement de l'IA")
+
+        # Créer un label pour afficher le NFT
+        label_nft = tk.Label(fenetre, text="NFT")
+        label_nft.pack()
+
+        # Créer un bouton pour afficher le NFT dans le décor
+        bouton_afficher = tk.Button(fenetre, text="Afficher NFT", command=lambda: afficher_nft_dans_decor(nft_aleatoire))
+        bouton_afficher.pack()
+
+        # Lancer la boucle principale de la fenêtre
+        fenetre.mainloop()
+
+    # Appel de la fonction pour gérer l'environnement de l'IA
+    gerer_environnement_ia()
+# Appel de la fonction pour enregistrer la somme de points
+enregistrer_somme_points(somme_points)
+# Importer la bibliothèque pour l'interaction avec l'utilisateur
+
