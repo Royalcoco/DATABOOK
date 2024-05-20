@@ -1,0 +1,45 @@
+input bin"(-'serum = models.ForeignKey('FKNAME', on_delete=models.CASCADE) more than once in name of the database connection to the face'-self
+import sqlite3
+
+conn = sqlite3.connect('database.db')
+c = conn.cursor()
+
+c.execute("""CREATE TABLE IF NOT EXISTS face_data" + """ (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, image BLOB)""")
+
+conn.commit()
+conn.close()
+
+import cv2
+import numpy as np
+
+face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+
+def extract_faces_and_save(image_path):
+    img = cv2.imread(image_path)
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
+    
+    for (x, y, w, h) in faces:
+        face_img = img[y:y+h, x:x+w]
+        face_img = cv2.resize(face_img, (100, 100))
+        
+        # Save the face image to the database
+        c.execute("INSERT INTO face_data (name, image) VALUES (?, ?)", ('face', cv2.imencode('.jpg', face_img)[1].tobytes()))
+        conn.commit()
+        
+    conn.close()
+    
+extract_faces_and_save('path_to_your_image.jpg')
+
+import sqlite3
+
+conn = sqlite3.connect('database.db')
+c = conn.cursor()
+
+c.execute("SELECT * FROM face_data")
+faces = c.fetchall()
+
+for face in faces:
+    print(face)
+    
+conn.close()
