@@ -1,4 +1,5 @@
 import random
+import requests
 
 # Liste de mots pour générer le NFT
 adjectifs = ['coloré', 'vibrant', 'unique', 'fantastique']
@@ -142,3 +143,69 @@ def demander_partage(nft):
 
 # Appel de la fonction pour demander le partage du NFT avec la plateforme annexe
 demander_partage(nft_aleatoire)
+# Importer les bibliothèques nécessaires
+
+# Fonction pour envoyer l'information au blockchain
+def envoyer_information_blockchain(information):
+    # Code pour envoyer l'information au blockchain
+    response = requests.post('https://blockchain-api.com', data=information)
+    if response.status_code == 200:
+        print("Information envoyée au blockchain avec succès !")
+    else:
+        print("Erreur lors de l'envoi de l'information au blockchain.")
+
+# Fonction pour créer un message d'investissement complet ou non
+def creer_message_investissement(complet):
+    if complet:
+        message = "Message d'investissement complet"
+    else:
+        message = "Message d'investissement non complet"
+    return message
+
+# Créer un message d'investissement complet
+message_complet = creer_message_investissement(True)
+# Envoyer le message au blockchain
+envoyer_information_blockchain(message_complet)
+
+# Créer une plateforme HTML pour acquérir le NFT
+def creer_plateforme_html():
+    # Code pour créer la plateforme HTML
+    html = """
+    <html>
+    <head>
+        <title>Acquérir le NFT</title>
+    </head>
+    <body>
+        <h1>Acquérir le NFT</h1>
+        <form action="/acheter_nft" method="post">
+            <label for="montant">Montant de l'investissement :</label>
+            <input type="number" id="montant" name="montant" required>
+            <input type="submit" value="Acheter">
+        </form>
+    </body>
+    </html>
+    """
+    return html
+
+# Fonction pour traiter l'achat du NFT
+def traiter_achat_nft(montant):
+    # Code pour traiter l'achat du NFT
+    somme_points = int(montant)
+    print(f"Montant de l'investissement : {somme_points}")
+    # Code pour détruire les points dans le NFT si quelqu'un tente de les prendre
+
+# Route pour acheter le NFT
+@app.route('/acheter_nft', methods=['POST'])
+def acheter_nft():
+    montant = request.form['montant']
+    traiter_achat_nft(montant)
+    return "Achat du NFT effectué avec succès !"
+
+# Appeler la fonction pour créer la plateforme HTML
+plateforme_html = creer_plateforme_html()
+# Afficher la plateforme HTML
+print(plateforme_html)
+# Fonction pour afficher la plateforme HTML
+def afficher_plateforme_html(plateforme_html):
+    print(plateforme_html)
+    
