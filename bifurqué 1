@@ -1,0 +1,330 @@
+import random
+import requests
+import tkinter as tk
+from qr_code import generate_qr_code, afficher_qr_code
+
+# Liste de mots pour générer le NFT
+adjectifs = ['coloré', 'vibrant', 'unique', 'fantastique']
+noms = ['chat', 'fleur', 'montagne', 'étoile']
+
+# Générateur de NFT aléatoire
+def generer_nft():
+    adjectif = random.choice(adjectifs)
+    nom = random.choice(noms)
+    return f"Mon NFT {adjectif} de {nom}"
+
+# Traitement de texte pour l'animation du NFT
+def animer_nft(nft):
+    # Ajoute ici ton code pour animer le NFT
+    print(f"Animation du NFT : {nft}")
+    
+
+# Générer un NFT aléatoire
+nft_aleatoire = generer_nft()
+
+# Animer le NFT
+animer_nft(nft_aleatoire)
+# Interface utilisateur pour animer le NFT
+def interface_utilisateur():
+    while True:
+        choix = input("Voulez-vous animer le NFT ? (Oui/Non) ")
+        if choix.lower() == "oui":
+            nft_aleatoire = generer_nft()
+            animer_nft(nft_aleatoire)
+        elif choix.lower() == "non":
+            print("Au revoir !")
+            break
+        else:
+            print("Veuillez répondre par 'Oui' ou 'Non'.")
+
+# Appel de l'interface utilisateur
+interface_utilisateur()
+# Fonction pour enregistrer le NFT animé dans un fichier
+def enregistrer_nft(nft, nom_fichier):
+    with open(nom_fichier, 'w') as fichier:
+        fichier.write(nft)
+    print(f"NFT enregistré dans le fichier : {nom_fichier}")
+
+# Demander à l'utilisateur s'il souhaite enregistrer le NFT
+def demander_enregistrement(nft):
+    choix = input("Voulez-vous enregistrer le NFT dans un fichier ? (Oui/Non) ")
+    if choix.lower() == "oui":
+        nom_fichier = input("Entrez le nom du fichier : ")
+        enregistrer_nft(nft, nom_fichier)
+    elif choix.lower() == "non":
+        print("NFT non enregistré.")
+    else:
+        print("Veuillez répondre par 'Oui' ou 'Non'.")
+
+# Appel de la fonction pour demander l'enregistrement du NFT
+demander_enregistrement(nft_aleatoire)
+# Fonction pour charger un NFT à partir d'un fichier
+def charger_nft(nom_fichier):
+    with open(nom_fichier, 'r') as fichier:
+        nft = fichier.read()
+    print(f"NFT chargé à partir du fichier : {nom_fichier}")
+    return nft
+
+# Demander à l'utilisateur s'il souhaite charger un NFT
+def demander_chargement():
+    choix = input("Voulez-vous charger un NFT à partir d'un fichier ? (Oui/Non) ")
+    if choix.lower() == "oui":
+        nom_fichier = input("Entrez le nom du fichier : ")
+        nft = charger_nft(nom_fichier)
+        animer_nft(nft)
+    elif choix.lower() == "non":
+        print("NFT non chargé.")
+    else:
+        print("Veuillez répondre par 'Oui' ou 'Non'.")
+        
+# Appel de la fonction pour demander le chargement d'un NFT
+demander_chargement()
+# Fonction pour partager un NFT sur les réseaux sociaux
+def partager_nft(nft):
+    print(f"NFT partagé sur les réseaux sociaux : {nft}")
+    # Créer une extension de la page annexe pour gérer le partage de connexion entre les contributeurs du NFT
+    # Générer un QR code avec une limite d'investissement de 1 million de points
+    qr_code = generate_qr_code(1000000)
+    # Afficher le QR code sur la page annexe du NFT
+    afficher_qr_code(qr_code)
+    # Calculer la somme que le NFT produit en points
+    somme_points = calculer_somme_points(nft)
+    # Enregistrer la somme dans une bourse volatile partagée entre les créateurs de contenu
+    enregistrer_somme_points(somme_points)
+    # Afficher un message de succès
+    print("NFT partagé avec succès !")
+    
+    # Demander à l'utilisateur s'il souhaite partager le NFT
+def demander_partage(nft):
+    choix = input("Voulez-vous partager le NFT sur les réseaux sociaux ? (Oui/Non) ")
+    if choix.lower() == "oui":
+        partager_nft(nft)
+    elif choix.lower() == "non":
+        print("NFT non partagé.")
+    else:
+        print("Veuillez répondre par 'Oui' ou 'Non'.")
+        
+# Appel de la fonction pour demander le partage du NFT
+demander_partage(nft_aleatoire)
+# Fonction pour générer un QR code avec une limite d'investissement
+def generate_qr_code(limite_investissement):
+    qr_code = f"QR code avec limite d'investissement : {limite_investissement}"
+    return qr_code
+
+# Fonction pour afficher le QR code sur la plateforme annexe
+def afficher_qr_code(qr_code):
+    print(f"Affichage du QR code : {qr_code}")
+
+# Fonction pour calculer la somme des points du NFT
+def calculer_somme_points(nft):
+    somme_points = len(nft) * 10
+    return somme_points
+
+# Fonction pour enregistrer la somme de points dans une bourse volatile
+def enregistrer_somme_points(somme_points):
+    print(f"Enregistrement de la somme de points : {somme_points}")
+
+# Fonction pour partager un NFT sur les réseaux sociaux avec la plateforme annexe
+def partager_nft(nft):
+    print(f"NFT partagé sur les réseaux sociaux : {nft}")
+    qr_code = generate_qr_code(1000000)
+    afficher_qr_code(qr_code)
+    somme_points = calculer_somme_points(nft)
+    enregistrer_somme_points(somme_points)
+    print("NFT partagé avec succès !")
+
+# Demander à l'utilisateur s'il souhaite partager le NFT avec la plateforme annexe
+def demander_partage(nft):
+    choix = input("Voulez-vous partager le NFT sur les réseaux sociaux avec la plateforme annexe ? (Oui/Non) ")
+    if choix.lower() == "oui":
+        partager_nft(nft)
+    elif choix.lower() == "non":
+        print("NFT non partagé.")
+    else:
+        print("Veuillez répondre par 'Oui' ou 'Non'.")
+
+# Appel de la fonction pour demander le partage du NFT avec la plateforme annexe
+demander_partage(nft_aleatoire)
+# Importer les bibliothèques nécessaires
+
+# Fonction pour envoyer l'information au blockchain
+def envoyer_information_blockchain(information):
+    # Code pour envoyer l'information au blockchain
+    response = requests.post('https://blockchain-api.com', data=information)
+    if response.status_code == 200:
+        print("Information envoyée au blockchain avec succès !")
+    else:
+        print("Erreur lors de l'envoi de l'information au blockchain.")
+
+# Fonction pour créer un message d'investissement complet ou non
+def creer_message_investissement(complet):
+    if complet:
+        message = "Message d'investissement complet"
+    else:
+        message = "Message d'investissement non complet"
+    return message
+
+# Créer un message d'investissement complet
+message_complet = creer_message_investissement(True)
+# Envoyer le message au blockchain
+envoyer_information_blockchain(message_complet)
+
+# Créer une plateforme HTML pour acquérir le NFT
+def creer_plateforme_html():
+    # Code pour créer la plateforme HTML
+    html = """
+    <html>
+    <head>
+        <title>Acquérir le NFT</title>
+    </head>
+    <body>
+        <h1>Acquérir le NFT</h1>
+        <form action="/acheter_nft" method="post">
+            <label for="montant">Montant de l'investissement :</label>
+            <input type="number" id="montant" name="montant" required>
+            <input type="submit" value="Acheter">
+        </form>
+    </body>
+    </html>
+    """
+    return html
+
+# Fonction pour traiter l'achat du NFT
+def traiter_achat_nft(montant):
+    # Code pour traiter l'achat du NFT
+    somme_points = int(montant)
+    print(f"Montant de l'investissement : {somme_points}")
+    # Code pour détruire les points dans le NFT si quelqu'un tente de les prendre
+
+# Route pour acheter le NFT
+@app.route('/acheter_nft', methods=['POST'])
+def acheter_nft():
+    montant = request.form['montant']
+    traiter_achat_nft(montant)
+    return "Achat du NFT effectué avec succès !"
+
+# Appeler la fonction pour créer la plateforme HTML
+plateforme_html = creer_plateforme_html()
+# Afficher la plateforme HTML
+print(plateforme_html)
+# Fonction pour afficher la plateforme HTML
+def afficher_plateforme_html(plateforme_html):
+    print(plateforme_html)
+    # Fonction pour valider la somme des investissements
+    def valider_somme_investissements(somme_investissements):
+        # Code pour valider la somme des investissements
+        qr_code = generate_qr_code(somme_investissements)
+        afficher_qr_code(qr_code)
+        mineur_points = creer_mineur_points()
+        copie_nft = mineur_points.creer_copie_nft()
+        print(f"Investissement total du NFT : {somme_investissements}")
+        print(f"Copie du NFT pour chaque investissement : {copie_nft}")
+
+    # Appel de la fonction pour valider la somme des investissements
+    valider_somme_investissements(somme_points)
+# Afficher la plateforme HTML
+afficher_plateforme_html(plateforme_html)
+# Fonction pour créer un mineur de points
+def creer_mineur_points():
+    class MineurPoints:
+        def __init__(self):
+            self.points = 0
+
+        def creer_copie_nft(self):
+            self.points += 1
+            return f"Copie du NFT avec {self.points} points"
+
+    return MineurPoints()
+
+# Créer un mineur de points
+mineur_points = creer_mineur_points()
+# Créer une copie du NFT
+copie_nft = mineur_points.creer_copie_nft()
+print(copie_nft)
+# Fonction pour enregistrer la somme de points dans une bourse volatile
+def enregistrer_somme_points(somme_points):
+    # Code pour enregistrer la somme de points
+    bourse_volatile = BourseVolatile()
+    bourse_volatile.enregistrer_somme_points(somme_points)
+    print(f"Enregistrement de la somme de points : {somme_points}")
+    # Importer la bibliothèque pour l'interaction avec l'utilisateur
+
+    import tkinter.messagebox as messagebox
+
+
+    # Fonction pour gérer l'échange des points avec une crypto
+    def echanger_points_crypto(points):
+        # Code pour échanger les points avec une crypto
+
+        crypto = generer_crypto()
+        messagebox.showinfo("Échange de points", f"Points échangés avec la crypto {crypto}: {points}")
+
+
+    # Fonction pour générer une crypto aléatoire
+    def generer_crypto():
+        cryptos = ['Bitcoin', 'Ethereum', 'Cardano', 'Solana']
+        crypto = random.choice(cryptos)
+        return crypto
+
+
+
+    # Fonction pour valider la somme des investissements
+    def valider_somme_investissements(somme_investissements):
+        # Code pour valider la somme des investissements
+
+        qr_code = generate_qr_code(somme_investissements)
+        afficher_qr_code(qr_code)
+        mineur_points = creer_mineur_points()
+
+        copie_nft = mineur_points.creer_copie_nft()
+        echanger_points_crypto(somme_investissements)
+
+        print(f"Investissement total du NFT : {somme_investissements}")
+        print(f"Copie du NFT pour chaque investissement : {copie_nft}")
+
+
+    # Appel de la fonction pour valider la somme des investissements
+    valider_somme_investissements(somme_points)
+# Appel de la fonction pour enregistrer la somme de points
+enregistrer_somme_points(somme_points)
+# Importer la bibliothèque pour l'interaction avec l'utilisateur
+import tkinter.messagebox as messagebox
+
+# Fonction pour gérer l'échange des points avec une crypto
+def echanger_points_crypto(points):
+    # Code pour échanger les points avec une crypto
+    crypto = generer_crypto()
+    messagebox.showinfo("Échange de points", f"Points échangés avec la crypto {crypto}: {points}")
+    
+# Fonction pour générer une crypto aléatoire
+def generer_crypto():
+    cryptos = ['Bitcoin', 'Ethereum', 'Cardano', 'Solana']
+    crypto = random.choice(cryptos)
+    return crypto
+
+# Appel de la fonction pour échanger les points avec une crypto
+echanger_points_crypto(somme_points)
+# Fonction pour enregistrer la somme de points dans une bourse volatile
+def enregistrer_somme_points(somme_points):
+    # Code pour enregistrer la somme de points
+    bourse_volatile = BourseVolatile()
+    bourse_volatile.enregistrer_somme_points(somme_points)
+    print(f"Enregistrement de la somme de points : {somme_points}")
+    
+# Fonction pour valider la somme des investissements
+# Import the necessary functions and classes
+def valider_somme_investissements(somme_investissements):
+    # Code to validate the sum of investments
+    qr_code = generate_qr_code(somme_investissements)
+    afficher_qr_code(qr_code)
+    mineur_points = creer_mineur_points()
+    copie_nft = mineur_points.creer_copie_nft()
+    echanger_points_crypto(somme_investissements)
+    print(f"Investissement total du NFT : {somme_investissements}")
+    print(f"Copie du NFT pour chaque investissement : {copie_nft}")
+
+    
+# Appel de la fonction pour valider la somme des investissements
+valider_somme_investissements(somme_points)
+# Importer la bibliothèque pour l'interaction avec l'utilisateur
+
