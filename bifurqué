@@ -1,0 +1,144 @@
+import random
+
+# Liste de mots pour générer le NFT
+adjectifs = ['coloré', 'vibrant', 'unique', 'fantastique']
+noms = ['chat', 'fleur', 'montagne', 'étoile']
+
+# Générateur de NFT aléatoire
+def generer_nft():
+    adjectif = random.choice(adjectifs)
+    nom = random.choice(noms)
+    return f"Mon NFT {adjectif} de {nom}"
+
+# Traitement de texte pour l'animation du NFT
+def animer_nft(nft):
+    # Ajoute ici ton code pour animer le NFT
+    print(f"Animation du NFT : {nft}")
+    
+
+# Générer un NFT aléatoire
+nft_aleatoire = generer_nft()
+
+# Animer le NFT
+animer_nft(nft_aleatoire)
+# Interface utilisateur pour animer le NFT
+def interface_utilisateur():
+    while True:
+        choix = input("Voulez-vous animer le NFT ? (Oui/Non) ")
+        if choix.lower() == "oui":
+            nft_aleatoire = generer_nft()
+            animer_nft(nft_aleatoire)
+        elif choix.lower() == "non":
+            print("Au revoir !")
+            break
+        else:
+            print("Veuillez répondre par 'Oui' ou 'Non'.")
+
+# Appel de l'interface utilisateur
+interface_utilisateur()
+# Fonction pour enregistrer le NFT animé dans un fichier
+def enregistrer_nft(nft, nom_fichier):
+    with open(nom_fichier, 'w') as fichier:
+        fichier.write(nft)
+    print(f"NFT enregistré dans le fichier : {nom_fichier}")
+
+# Demander à l'utilisateur s'il souhaite enregistrer le NFT
+def demander_enregistrement(nft):
+    choix = input("Voulez-vous enregistrer le NFT dans un fichier ? (Oui/Non) ")
+    if choix.lower() == "oui":
+        nom_fichier = input("Entrez le nom du fichier : ")
+        enregistrer_nft(nft, nom_fichier)
+    elif choix.lower() == "non":
+        print("NFT non enregistré.")
+    else:
+        print("Veuillez répondre par 'Oui' ou 'Non'.")
+
+# Appel de la fonction pour demander l'enregistrement du NFT
+demander_enregistrement(nft_aleatoire)
+# Fonction pour charger un NFT à partir d'un fichier
+def charger_nft(nom_fichier):
+    with open(nom_fichier, 'r') as fichier:
+        nft = fichier.read()
+    print(f"NFT chargé à partir du fichier : {nom_fichier}")
+    return nft
+
+# Demander à l'utilisateur s'il souhaite charger un NFT
+def demander_chargement():
+    choix = input("Voulez-vous charger un NFT à partir d'un fichier ? (Oui/Non) ")
+    if choix.lower() == "oui":
+        nom_fichier = input("Entrez le nom du fichier : ")
+        nft = charger_nft(nom_fichier)
+        animer_nft(nft)
+    elif choix.lower() == "non":
+        print("NFT non chargé.")
+    else:
+        print("Veuillez répondre par 'Oui' ou 'Non'.")
+        
+# Appel de la fonction pour demander le chargement d'un NFT
+demander_chargement()
+# Fonction pour partager un NFT sur les réseaux sociaux
+def partager_nft(nft):
+    print(f"NFT partagé sur les réseaux sociaux : {nft}")
+    # Créer une extension de la page annexe pour gérer le partage de connexion entre les contributeurs du NFT
+    # Générer un QR code avec une limite d'investissement de 1 million de points
+    qr_code = generate_qr_code(1000000)
+    # Afficher le QR code sur la page annexe du NFT
+    afficher_qr_code(qr_code)
+    # Calculer la somme que le NFT produit en points
+    somme_points = calculer_somme_points(nft)
+    # Enregistrer la somme dans une bourse volatile partagée entre les créateurs de contenu
+    enregistrer_somme_points(somme_points)
+    # Afficher un message de succès
+    print("NFT partagé avec succès !")
+    
+    # Demander à l'utilisateur s'il souhaite partager le NFT
+def demander_partage(nft):
+    choix = input("Voulez-vous partager le NFT sur les réseaux sociaux ? (Oui/Non) ")
+    if choix.lower() == "oui":
+        partager_nft(nft)
+    elif choix.lower() == "non":
+        print("NFT non partagé.")
+    else:
+        print("Veuillez répondre par 'Oui' ou 'Non'.")
+        
+# Appel de la fonction pour demander le partage du NFT
+demander_partage(nft_aleatoire)
+# Fonction pour générer un QR code avec une limite d'investissement
+def generate_qr_code(limite_investissement):
+    qr_code = f"QR code avec limite d'investissement : {limite_investissement}"
+    return qr_code
+
+# Fonction pour afficher le QR code sur la plateforme annexe
+def afficher_qr_code(qr_code):
+    print(f"Affichage du QR code : {qr_code}")
+
+# Fonction pour calculer la somme des points du NFT
+def calculer_somme_points(nft):
+    somme_points = len(nft) * 10
+    return somme_points
+
+# Fonction pour enregistrer la somme de points dans une bourse volatile
+def enregistrer_somme_points(somme_points):
+    print(f"Enregistrement de la somme de points : {somme_points}")
+
+# Fonction pour partager un NFT sur les réseaux sociaux avec la plateforme annexe
+def partager_nft(nft):
+    print(f"NFT partagé sur les réseaux sociaux : {nft}")
+    qr_code = generate_qr_code(1000000)
+    afficher_qr_code(qr_code)
+    somme_points = calculer_somme_points(nft)
+    enregistrer_somme_points(somme_points)
+    print("NFT partagé avec succès !")
+
+# Demander à l'utilisateur s'il souhaite partager le NFT avec la plateforme annexe
+def demander_partage(nft):
+    choix = input("Voulez-vous partager le NFT sur les réseaux sociaux avec la plateforme annexe ? (Oui/Non) ")
+    if choix.lower() == "oui":
+        partager_nft(nft)
+    elif choix.lower() == "non":
+        print("NFT non partagé.")
+    else:
+        print("Veuillez répondre par 'Oui' ou 'Non'.")
+
+# Appel de la fonction pour demander le partage du NFT avec la plateforme annexe
+demander_partage(nft_aleatoire)
