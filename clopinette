@@ -1,0 +1,226 @@
+from PIL import Image, ImageSequence
+import time
+import hashlib
+import json
+import qrcode
+
+# Create a new image with a transparent background
+image = Image.new("RGBA", (500, 500), (0, 0, 0, 0))
+
+# Load the cigarette image
+cigarette = Image.open("cigarette.png")
+
+# Define the animation frames
+frames = []
+for i in range(10):
+    # Create a new frame by overlaying the cigarette image on the background
+    frame = image.copy()
+    frame.paste(cigarette, (100, 100), cigarette)
+
+    # Add the frame to the list of frames
+    frames.append(frame)
+
+# Save the frames as an animated PNG file
+frames[0].save("animated_cigarette.gif", save_all=True, append_images=frames[1:], optimize=False, duration=100, loop=0)
+# Define the blockchain class
+class Blockchain:
+    def __init__(self):
+        self.chain = []
+        self.transactions = []
+
+        self.frames = []  # Add a frames attribute to the Blockchain class
+
+
+        self.user_transactions = {}  # Dictionary to store user transactions
+    
+    def create_block(self, proof, previous_hash):
+        # Create a new block with the given proof and previous hash
+        block = {
+            'index': len(self.chain) + 1,
+            'timestamp': time.time(),
+            'proof': proof,
+            'previous_hash': previous_hash,
+            'transactions': self.transactions
+        }
+        self.transactions = []  # Clear the list of transactions
+        self.chain.append(block)
+        return block
+
+
+
+    
+    def add_transaction(self, sender, receiver, amount):
+        # Add a new transaction to the list
+        self.transactions.append({
+            'sender': sender,
+            'receiver': receiver,
+            'amount': amount
+        })
+
+
+
+        # Check if the sender is the user who opened the application
+        if sender == "User1":
+            # Check if the user has already reached the maximum number of cigarettes per day
+            if sender in self.user_transactions and len(self.user_transactions[sender]) >= 5:
+                print("You have reached the maximum number of cigarettes per day.")
+            else:
+                # Check if the receiver is the lighter
+                if receiver == "Lighter":
+                    # Calculate the percentage of the cigarette consumed
+                    percentage = amount / 0.010
+                    # Calculate the reward based on the percentage
+                    reward = self.calculate_reward(percentage)
+                    # Add the transaction to the user's transactions
+                    if sender in self.user_transactions:
+                        self.user_transactions[sender].append({
+                            'receiver': receiver,
+                            'amount': amount,
+                            'reward': reward
+                        })
+                    else:
+                        self.user_transactions[sender] = [{
+                            'receiver': receiver,
+                            'amount': amount,
+                            'reward': reward
+                        }]
+                else:
+                    print("Invalid receiver. Only the lighter can receive cigarettes.")
+        else:
+            print("Invalid sender. Only User1 can send cigarettes.")
+    
+    def mine_block(self, miner):
+        # Mine a new block by finding a proof of work
+        last_block = self.chain[-1]
+        last_proof = last_block['proof']
+        proof = self.proof_of_work(last_proof)
+        previous_hash = self.hash_block(last_block)
+        self.add_transaction("Bourse", miner, 0.010)  # Deduct the cost from the miner's balance
+        block = self.create_block(proof, previous_hash)
+        return block
+
+
+
+    
+    def proof_of_work(self, last_proof):
+        # Find a number that, when hashed with the previous proof, gives a hash with 4 leading zeros
+        proof = 0
+        while self.valid_proof(last_proof, proof) is False:
+            proof += 1
+        return proof
+
+
+
+    
+    @staticmethod
+    def valid_proof(last_proof, proof):
+        # Check if the proof is valid by verifying the hash
+        guess = f'{last_proof}{proof}'.encode()
+        guess_hash = hashlib.sha256(guess).hexdigest()
+        return guess_hash[:4] == "0000"
+
+
+
+    
+    @staticmethod
+    def hash_block(block):
+        # Hash the given block using SHA-256
+        block_string = json.dumps(block, sort_keys=True).encode()
+        return hashlib.sha256(block_string).hexdigest()
+
+
+
+
+    
+    def animate_cigarette(self, cigarette, frames):
+        for i in range(10):
+            # Update the frame by overlaying the burnt part of the cigarette image
+            frame = frames[i].copy()
+            burnt_part = cigarette.crop((0, 0, int(cigarette.width * (i + 1) / 10), cigarette.height))
+            frame.paste(burnt_part, (100, 100), burnt_part)
+            # Add the updated frame to the list of frames
+            frames.append(frame)
+        # Save the frames as an animated GIF file
+        frames[0].save("animated_cigarette.gif", save_all=True, append_images=frames[1:], optimize=False, duration=100, loop=0)
+
+
+    
+    def calculate_reward(self, percentage):
+        # Calculate the reward based on the percentage of the cigarette consumed
+        reward = int(percentage * 100)
+        return reward
+
+()
+        burnt_part = cigarette.crop((0, 0, int(cigarette.width * (i + 1) / 10), cigarette.height))
+        frame.paste(burnt_part, (100, 100), burnt_part)
+        # Add the updated frame to the list of frames
+        frames.append(frame)
+
+    # Save the frames as an animated GIF file
+    frames[0].save("animated_cigarette.gif", save_all=True, append_images=frames[1:], optimize=False, duration=100, loop=0)
+    # Define the blockchain class
+    
+    def __init__(self):
+        self.chain = []
+        self.transactions = []
+        self.frames = []  # Add a frames attribute to the Blockchain class
+        self.user_transactions = {}  # Dictionary to store user transactions
+        
+    def create_block(self, proof, previous_hash):
+        # Create a new block with the given proof and previous hash
+        block = {
+            'index': len(self.chain) + 1,
+            'timestamp': time.time(),
+            'proof': proof,
+            'previous_hash': previous_hash,
+            'transactions': self.transactions
+        }
+        self.transactions = []  # Clear the list of transactions
+        self.chain.append(block)
+        return block
+    # Create a new instance of the Blockchain class
+    blockchain = Blockchain()
+
+    # Add a transaction to the blockchain
+    blockchain.add_transaction("User1", "Lighter", 0.010)
+
+    # Mine a new block
+    miner = "Miner1"
+    block = blockchain.mine_block(miner)
+
+    # Animate the cigarette
+    blockchain.animate_cigarette(cigarette, blockchain.frames)
+
+    # Save the blockchain to a file
+    with open("blockchain.json", "w") as file:
+        json.dump(blockchain.chain, file)
+        # Generate a QR code for the transaction
+
+        transaction_data = {
+            'sender': "User1",
+            'receiver': "Lighter",
+            'amount': 0.010
+        }
+
+        transaction_qr = qrcode.make(transaction_data)
+
+        # Save the QR code to a file
+        transaction_qr.save("transaction_qr.png")
+
+        # Add the QR code to the decentralized library
+        decentralized_library = []
+
+        # Load the existing decentralized library from a file
+        try:
+            with open("decentralized_library.json", "r") as file:
+                decentralized_library = json.load(file)
+        except FileNotFoundError:
+            pass
+
+        # Add the QR code to the decentralized library
+        decentralized_library.append("transaction_qr.png")
+
+        # Save the updated decentralized library to a file
+        with open("decentralized_library.json", "w") as file:
+            json.dump(decentralized_library, file)
+            
