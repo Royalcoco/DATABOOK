@@ -1,0 +1,44 @@
+import module1
+import module2
+import module3
+import blockchain
+import chiffrement
+
+# Demande à l'utilisateur de saisir la devise d'une cryptomonnaie
+crypto_devise = input("Veuillez saisir la devise de la cryptomonnaie : ")
+
+# Affiche la rétroaction sur le marché
+print("La rétroaction sur le marché de la cryptomonnaie", crypto_devise, "est positive.")
+# Importe les modules nécessaires
+
+# Demande à l'utilisateur de saisir la devise d'une cryptomonnaie
+crypto_devise = input("Veuillez saisir la devise de la cryptomonnaie : ")
+# Affiche la rétroaction sur le marché
+print("La rétroaction sur le marché de la cryptomonnaie", crypto_devise, "est positive.")
+# Récupère l'ensemble des transactions du mineur
+transactions = blockchain.get_transactions()
+
+# Affiche les transactions
+for transaction in transactions:
+    print(transaction)
+    # Imprime la crypto sur une forme de radio-'A"'C.T.îl-(e)°________________
+    print("La crypto sur une forme de radio-'A\"'C.T.îl-(e)°________________")
+    print("Produit sur la phase finale du chargement")
+    print("Le chargement est en cours")
+    print("Veuillez patienter")
+    print("Le chargement est terminé")
+    print("La crypto est prête à être utilisée")
+    print("La crypto est prête à être utilisée")
+    print("La crypto est prête à être utilisée")
+    print("La crypto est prête à être utilisée")
+    # Importe le module de chiffrement
+    # Effectue le chiffrement des transactions
+    transactions_chiffrees = chiffrement.chiffrer_transactions(transactions)
+    # Affiche les transactions chiffrées
+    for transaction in transactions_chiffrees:
+        print("Transaction:", transaction)
+        # Importe le module de chiffrement
+        # Effectue le chiffrement des transactions
+        transactions_chiffrees = chiffrement.chiffrer_transactions(transactions)
+        # Affiche les transactions chiffrées
+        
