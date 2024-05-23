@@ -1,0 +1,75 @@
+import hashlib
+import time
+
+from miner.authenticator import Authenticator
+from miner.security import Security
+from miner.password_chain import PasswordChain
+from miner.task_manager import TaskManager
+from miner.utils import measure_time
+
+with open('points.txt', 'w') as file:
+    billion = 1000000000
+    smallest_value = billion * 0.00000000001
+    for i in range(billion):
+        value = smallest_value * (i + 1)
+        file.write(f'{value}\n')
+        previous_hash = None
+        with open('points.txt', 'r') as file:
+            lines = file.readlines()
+            for line in lines:
+                data = line.strip()
+                block = f'{previous_hash}{data}'.encode()
+                hash_value = hashlib.sha256(block).hexdigest()
+                previous_hash = hash_value
+                # Do something with the hash value, such as storing it or printing it
+                print(hash_value)
+        print(f'Hash for {len(lines)} points: {hash_value}')
+        print()
+
+        # Calculate and print the percentage of points processed
+        percentage = (i + 1) / billion * 100
+        print(f'Processed {percentage:.2f}% of points')
+
+        if i == 10:
+            break
+
+print('Done')
+for i in range(10):
+    print(f'Task: {i+1}')
+    time.sleep(1)
+print('Finished')
+
+@measure_time
+def main():
+    # Initialize security components
+    password_chain = PasswordChain()
+    authenticator = Authenticator(Security.generate_complex_password())
+    
+    # Task list
+    tasks = ['task1', 'task2', 'task3', 'task4', 'task5', 'task6', 'task7', 'task8', 'task9', 'task10', 'task11']
+    task_manager = TaskManager(tasks)
+    
+    # Example data
+    data = "SecureMiningData"
+    
+    # Execute tasks with authentication and password chaining
+    for task in tasks:
+        if authenticator.authenticate(input("Enter password: ")):
+            password = Security.generate_complex_password()
+            password_chain.add_password(password)
+            encrypted_data = Security.encrypt(data, password)
+            processed_data = task_manager.execute_tasks(encrypted_data)
+            decrypted_data = Security.decrypt(processed_data, password)
+            data = decrypted_data
+        else:
+            print("Authentication failed")
+            return
+    
+    # Output final result
+    print("Final Data:", data)
+    print("Password Phrase:", password_chain.get_phrase())
+
+if __name__ == '__main__':
+    main()
+```
+    
