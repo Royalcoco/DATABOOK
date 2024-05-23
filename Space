@@ -1,0 +1,112 @@
+from PIL import Image, ImageDraw
+import module1
+import module2
+import module3
+import blockchain
+import chiffrement
+
+def memoire(image_path):
+    """
+    Converts an image to a text area representation and sends it as an image.
+
+    Args:
+        image_path (str): The path of the image file.
+
+    Returns:
+        None
+    """
+    # Load the image
+    image = Image.open(image_path)
+    width, height = image.size
+
+    # Create a blank image with the same size as the original image
+    collision_zone = Image.new('RGB', (width, height), color=(255, 255, 255))
+    draw = ImageDraw.Draw(collision_zone)
+
+    # Iterate over the pixels of the original image
+    for y in range(height):
+        for x in range(width):
+            # Get the pixel color at the current position
+            pixel = image.getpixel((x, y))
+
+            # Check if the pixel color represents a ping
+            if is_ping(pixel):
+                # Draw a rectangle in the collision zone at the same position
+                draw.rectangle([(x, y), (x+1, y+1)], fill=(0, 0, 0))
+
+    # Convert the collision zone image to a text area
+    text_area = convert_to_text_area(collision_zone)
+
+    # Send the text area as an image
+    send_image(text_area)
+
+def is_ping(pixel):
+    """
+    Checks if the pixel color represents a ping.
+
+    Args:
+        pixel (tuple): The RGB values of the pixel.
+
+    Returns:
+        bool: True if the pixel color represents a ping, False otherwise.
+    """
+    # Check if the pixel color represents a ping
+    # You can define your own logic here based on the color values
+    # For example, if the pixel is red, green, and blue values are all above a certain threshold
+    return pixel[0] > 200 and pixel[1] < 50 and pixel[2] < 50
+
+def convert_to_text_area(image):
+    """
+    Converts an image to a text area representation.
+
+    Args:
+        image (PIL.Image.Image): The image to be converted.
+
+    Returns:
+        str: The text area representation of the image.
+    """
+    # Convert the image to a text area representation
+    # You can define your own logic here to convert the image to text
+    # For example, you can convert each pixel to a character based on its color value
+    text_area = ""
+
+    for y in range(image.height):
+        for x in range(image.width):
+            pixel = image.getpixel((x, y))
+            if pixel == (0, 0, 0):
+                text_area += "#"
+            else:
+                text_area += " "
+
+        text_area += "\n"
+
+    return text_area
+
+def send_image(text_area):
+    """
+    Sends the text area as an image.
+
+    Args:
+        text_area (str): The text area representation of the image.
+
+    Returns:
+        None
+    """
+    # Send the text area as an image
+    # You can define your own logic here to send the image
+    # For example, you can save the text area as a text file or convert it back to an image and send it
+    print(text_area)
+
+def delta():
+    """
+    Define your strategy function here.
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
+    # Implement your strategy logic
+    # ...
+    pass
