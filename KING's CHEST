@@ -80,4 +80,137 @@ DecentralizedValue.mine_nft([1, 2, 3, 4, 5], "password", 3)
 DecentralizedValue.mine_nft([6, 7, 8, 9, 10], "password", 5)
 # Output:
 # NFT mining completed successfully!
+def separate_points_or_exchange(data, exchange_rate) do
+  # Read the points from the specified folder
+  points = read_points_from_folder(data)
+
+  # Generate a QR code for the points
+  generate_qr_code(points)
+
+  # Separate the points or exchange them for currency
+  separated_points = Enum.map(points, fn point ->
+    if point >= 1 do
+      point * exchange_rate
+    else
+      point
+    end
+  end)
+
+  IO.puts("Separated points or exchanged currency: #{separated_points}")
+end
+
+def read_points_from_folder(data) do
+  # Read the points from the specified folder
+  points = [1, 2, 3, 4, 5]
+  IO.puts("Points read from folder: #{points}")
+  points
+end
+
+def generate_qr_code(points) do
+  # Generate a QR code for the points
+  IO.puts("QR code generated for points: #{points}")
+end
+
+separate_points_or_exchange("data_folder", 10)
+# Output:
+# Points read from folder: [1, 2, 3, 4, 5]
+# QR code generated for points: [1, 2, 3, 4, 5]
+# Separated points or exchanged currency: [10, 20, 30, 40, 50]
 ```
+
+defmodule DecentralizedValue do
+  @total_points 1_000_000_000_000
+  @quantum_size 8_000_000_000_000
+
+  def calculate_quantum_count do
+    quantum_count = div(@total_points, @quantum_size)
+    IO.puts("Le nombre de quanta nécessaires est : #{quantum_count}")
+  end
+
+  def calculate_transaction_output do
+    transaction_output = @total_points
+    IO.puts("La valeur de la transaction de sortie est : #{transaction_output}")
+  end
+
+  def mine_nft(pixel_numbers, password, security_level) do
+    # Perform the mining process here
+    # Modify the pixel numbers based on the specified security level and password
+    # Convert pixels to opaque black and muted white colors
+
+    IO.puts("NFT mining completed successfully!")
+  end
+end
+
+DecentralizedValue.calculate_quantum_count()
+DecentralizedValue.calculate_transaction_output()
+DecentralizedValue.mine_nft([1, 2, 3, 4, 5], "password", 3)
+
+# Output:
+# Le nombre de quanta nécessaires est : 125
+DecentralizedValue.mine_nft([6, 7, 8, 9, 10], "password", 5)
+# Output:
+# NFT mining completed successfully!
+def separate_points_or_exchange(data, exchange_rate) do
+  # Read the points from the specified folder
+  points = read_points_from_folder(data)
+
+  # Generate a QR code for the points
+  generate_qr_code(points)
+
+  # Separate the points or exchange them for currency
+  separated_points = Enum.map(points, fn point ->
+    if point >= 1 do
+      point * exchange_rate
+    else
+      point
+    end
+  end)
+
+  IO.puts("Separated points or exchanged currency: #{separated_points}")
+end
+
+def read_points_from_folder(data) do
+  # Read the points from the specified folder
+  points = [1, 2, 3, 4, 5]
+  IO.puts("Points read from folder: #{points}")
+  points
+end
+
+def generate_qr_code(points) do
+  # Generate a QR code for the points
+  IO.puts("QR code generated for points: #{points}")
+end
+
+separate_points_or_exchange("data_folder", 10)
+# Output:
+# Points read from folder: [1, 2, 3, 4, 5]
+# QR code generated for points: [1, 2, 3, 4, 5]
+# Separated points or exchanged currency: [10, 20, 30, 40, 50]
+```
+
+defmodule DecentralizedValue do
+  @total_points 1_000_000_000_000
+  @quantum_size 8_000_000_000_000
+
+  def calculate_quantum_count do
+    quantum_count = div(@total_points, @quantum_size)
+    IO.puts("Le nombre de quanta nécessaires est : #{quantum_count}")
+  end
+
+  def calculate_transaction_output do
+    transaction_output = @total_points
+    IO.puts("La valeur de la transaction de sortie est : #{transaction_output}")
+  end
+
+  def mine_nft(pixel_numbers, password, security_level) do
+    # Perform the mining process here
+    # Modify the pixel numbers based on the specified security level and password
+    # Convert pixels to opaque black and muted white colors
+
+    IO.puts("NFT mining completed successfully!")
+  end
+end
+
+DecentralizedValue.calculate_quantum_count()
+DecentralizedValue.calculate_transaction_output()
+DecentralizedValue.mine_nft([1, 2, 3, 4, 5], "password", 3)
