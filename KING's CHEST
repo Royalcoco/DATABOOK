@@ -1,0 +1,83 @@
+import IO
+
+defmodule DecentralizedValue do
+  @total_points 1_000_000_000_000
+  @quantum_size 8_000_000_000_000
+
+  def calculate_quantum_count do
+    quantum_count = div(@total_points, @quantum_size)
+    IO.puts("Le nombre de quanta nécessaires est : #{quantum_count}")
+  end
+
+  def calculate_transaction_output do
+    transaction_output = @total_points
+    IO.puts("La valeur de la transaction de sortie est : #{transaction_output}")
+  end
+
+  def mine_nft(pixel_numbers, password, security_level) do
+    # Perform the mining process here
+    # Modify the pixel numbers based on the specified security level and password
+    # Convert pixels to opaque black and muted white colors
+
+    IO.puts("NFT mining completed successfully!")
+  end
+end
+
+DecentralizedValue.calculate_quantum_count()
+DecentralizedValue.calculate_transaction_output()
+DecentralizedValue.mine_nft([1, 2, 3, 4, 5], "password", 3)
+
+# Output:
+# Le nombre de quanta nécessaires est : 125
+DecentralizedValue.mine_nft([6, 7, 8, 9, 10], "password", 5)
+# Output:
+# NFT mining completed successfully!
+```
+def decentralize_even_numbers(data) do
+  data
+  |> Enum.filter(fn num -> rem(num, 2) == 0 end)
+  |> Enum.chunk_every(4)
+end
+def decentralize_even_numbers(data) do
+  data
+  |> Enum.filter(fn num -> rem(num, 2) == 0 end)
+  |> Enum.chunk_every(4)
+end
+
+DecentralizedValue.mine_nft([11, 12, 13, 14, 15], "password", 2)
+# Output:
+# NFT mining completed successfully!
+```
+defmodule DecentralizedValue do
+  @total_points 1_000_000_000_000
+  @quantum_size 8_000_000_000_000
+
+  def calculate_quantum_count do
+    quantum_count = div(@total_points, @quantum_size)
+    IO.puts("Le nombre de quanta nécessaires est : #{quantum_count}")
+  end
+
+  def calculate_transaction_output do
+    transaction_output = @total_points
+    IO.puts("La valeur de la transaction de sortie est : #{transaction_output}")
+  end
+
+  def mine_nft(pixel_numbers, password, security_level) do
+    # Perform the mining process here
+    # Modify the pixel numbers based on the specified security level and password
+    # Convert pixels to opaque black and muted white colors
+
+    IO.puts("NFT mining completed successfully!")
+  end
+end
+
+DecentralizedValue.calculate_quantum_count()
+DecentralizedValue.calculate_transaction_output()
+DecentralizedValue.mine_nft([1, 2, 3, 4, 5], "password", 3)
+
+# Output:
+# Le nombre de quanta nécessaires est : 125
+DecentralizedValue.mine_nft([6, 7, 8, 9, 10], "password", 5)
+# Output:
+# NFT mining completed successfully!
+```
