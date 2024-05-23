@@ -1,0 +1,125 @@
+import pyttsx3
+import serial_module1
+import serial_module2
+import serial_module3
+# Créer trois instances du moteur de synthèse vocal
+engine1 = pyttsx3.init()
+engine2 = pyttsx3.init()
+engine3 = pyttsx3.init()
+
+# Définir les propriétés du moteur de synthèse vocal
+engine1.setProperty('rate', 150)  # Vitesse de parole du premier module
+engine2.setProperty('rate', 200)  # Vitesse de parole du deuxième module
+engine3.setProperty('rate', 250)  # Vitesse de parole du troisième module
+
+# Définir le texte à synthétiser pour chaque module
+text1 = "Module 1: Bonjour, comment ça va?"
+text2 = "Module 2: Je suis un synthétiseur vocal."
+text3 = "Module 3: Merci de me programmer!"
+
+# Synthétiser le texte pour chaque module
+engine1.say(text1)
+engine2.say(text2)
+engine3.say(text3)
+
+# Attendre que la synthèse vocale soit terminée
+engine1.runAndWait()
+engine2.runAndWait()
+engine3.runAndWait()
+
+# Rendu audio du texte pour chaque module
+engine1.save_to_file(text1, 'module1.wav')
+engine2.save_to_file(text2, 'module2.wav')
+engine3.save_to_file(text3, 'module3.wav')
+
+# Connecter les trois modules en tant que sorties audio sur une connexion multipériphérique Bluetooth
+connect_module1()
+connect_module2()
+connect_module3()
+
+# Fonction pour connecter le module 1 en tant que sortie audio Bluetooth
+def connect_module1 do
+  # Code pour connecter le module 1 en tant que sortie audio Bluetooth
+end
+
+# Fonction pour connecter le module 2 en tant que sortie audio Bluetooth
+def connect_module2 do
+  # Code pour connecter le module 2 en tant que sortie audio Bluetooth
+end
+
+# Fonction pour connecter le module 3 en tant que sortie audio Bluetooth
+def connect_module3 do
+  # Code pour connecter le module 3 en tant que sortie audio Bluetooth
+end
+# Fonction pour adoucir les modules par rayonnement de pluralité de chargeur
+def adoucir_modules do
+  # Code pour adoucir les modules par rayonnement de pluralité de chargeur
+end
+
+# Fonction pour égaliser les synthétiseurs sur une amplitude multifréquentielle
+def egaliser_synthetiseurs do
+  # Code pour égaliser les synthétiseurs sur une amplitude multifréquentielle
+end
+
+# Appeler les fonctions pour adoucir les modules et égaliser les synthétiseurs
+adoucir_modules()
+egaliser_synthetiseurs()
+# Remove the incorrect import statement
+# import les module fonctionelle sur site web page pour adoucir sur site web ;)
+
+# Créer trois instances du moteur de synthèse vocale
+engine1 = pyttsx3.init()
+engine2 = pyttsx3.init()
+engine3 = pyttsx3.init()
+
+# Définir les propriétés du moteur de synthèse vocale
+
+engine1.setProperty('rate', 150)  # Vitesse de parole du premier module
+engine2.setProperty('rate', 200)  # Vitesse de parole du deuxième module
+engine3.setProperty('rate', 250)  # Vitesse de parole du troisième module
+# Synthétiser le bruit de cigarette allumée
+engine1.say("Ph'As.e_10ALPha")
+engine1.runAndWait()
+
+# Synthétiser le bruit de la partie 2 de la cendre
+engine2.say("Eg_'\"alet")
+engine2.runAndWait()
+
+
+# Créer une fonction pour générer une séquence de puissances de 2 jusqu'à une limite supérieure donnée
+def generate_power_sequence(limit) do
+  powers = []
+  current_power = 1
+
+  while current_power <= limit do
+    powers = [current_power | powers]
+    current_power = current_power * 2
+  end
+
+  powers
+end
+
+# Appeler la fonction pour générer une séquence de puissances de 2 jusqu'à 5 fois la fréquence renouvelée
+power_sequence = generate_power_sequence(5)
+
+# Utiliser la séquence de puissances de 2 pour synthétiser le bruit de la fréquence renouvelée
+for power <- power_sequence do
+  engine3.say("Une_'L'AtTence de #{power}x surpér-ieur.dates,_'Aux.ping-'(var)")
+  engine3.runAndWait()
+end
+# Créer une fonction pour générer une séquence de puissances de 2 jusqu'à une limite supérieure donnée
+def generate_power_sequence(limit) do
+  powers = []
+  current_power = 1
+
+  while current_power <= limit do
+    powers = [current_power | powers]
+    current_power = current_power * 2
+  end
+
+  powers
+end
+# Créer une fonction pour ajuster les valeurs en fonction de la racine carrée de pi pour 'hare du ping
+def ajuster_valeurs do
+  # Code pour ajuster les valeurs en fonction de la racine carrée de pi pour 'hare du ping
+end
