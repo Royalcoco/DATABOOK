@@ -1,0 +1,149 @@
+import hashlib
+import curses
+import random
+import time
+import time
+import qrcode
+
+class Block:
+    def __init__(self, data, previous_hash):
+        self.data = data
+        self.previous_hash = previous_hash
+        self.nonce = 0
+        self.hash = self.calculate_hash()
+
+    def calculate_hash(self):
+        data_string = str(self.data) + str(self.previous_hash) + str(self.nonce)
+        return hashlib.sha256(data_string.encode()).hexdigest()
+
+    def mine_block(self, difficulty):
+        while self.hash[:difficulty] != '0' * difficulty:
+            self.nonce += 1
+            self.hash = self.calculate_hash()
+
+class Blockchain:
+    def __init__(self):
+        self.chain = [self.create_genesis_block()]
+        self.difficulty = 4
+
+    def create_genesis_block(self):
+        return Block("Genesis Block", "0")
+
+    def get_latest_block(self):
+        return self.chain[-1]
+
+    def add_block(self, new_block):
+        new_block.previous_hash = self.get_latest_block().hash
+        new_block.mine_block(self.difficulty)
+        self.chain.append(new_block)
+
+    def is_chain_valid(self):
+        for i in range(1, len(self.chain)):
+            current_block = self.chain[i]
+            previous_block = self.chain[i - 1]
+
+            if current_block.hash != current_block.calculate_hash():
+                return False
+
+            if current_block.previous_hash != previous_block.hash:
+                return False
+
+        return True
+
+def create_matrix(stdscr):
+    curses.curs_set(0)  # Hide the cursor
+    stdscr.nodelay(1)   # Make getch() non-blocking
+    stdscr.timeout(50)  # Refresh the screen every 50 milliseconds
+
+    sh, sw = stdscr.getmaxyx()
+    w = sw // 2
+
+    # Create a list of dropping columns
+    columns = [0] * w
+
+    while True:
+        stdscr.clear()
+
+        for i in range(w):
+            if columns[i] == sh or random.random() > 0.95:
+                columns[i] = 0
+            else:
+                columns[i] += 1
+
+            char = chr(random.randint(33, 126))
+            stdscr.addstr(columns[i], i * 2, char, curses.color_pair(1))
+
+        stdscr.refresh()
+
+        if stdscr.getch() != -1:
+            break
+
+def main():
+    curses.wrapper(create_matrix)
+
+if __name__ == "__main__":
+    curses.start_color()
+    curses.init_pair(1, curses.COLOR_GREEN, curses.COLOR_BLACK)
+    main()
+    def memofactorielle(n):
+        if n == 0:
+            return 1
+        else:
+            return n * memofactorielle(n-1)
+
+    def main():
+        # Your existing code here
+        curses.wrapper(create_matrix)
+
+    if __name__ == "__main__":
+        # Your existing code here
+        curses.start_color()
+        curses.init_pair(1, curses.COLOR_GREEN, curses.COLOR_BLACK)
+        main()
+        blockchain = Blockchain()
+        blockchain.add_block(Block("Block 1", ""))
+        blockchain.add_block(Block("Block 2", ""))
+        blockchain.add_block(Block("Block 3", ""))
+        blockchain.add_block(Block("Block 4", ""))
+        for i in range(5, 1000000001):
+            blockchain.add_block(Block(f"Block {i}", ""))
+            if i % 1000000 == 0:
+                # Reset the data of mining and offer a copy to the master IP address
+                blockchain = Blockchain()
+                blockchain.add_block(Block("Block 1", ""))
+                blockchain.add_block(Block("Block 2", ""))
+                blockchain.add_block(Block("Block 3", ""))
+                blockchain.add_block(Block("Block 4", ""))
+                # Redistribute points based on mining percentage of NFT
+                # Your code here
+                # Calculate the total mining percentage of NFTs
+                total_mining_percentage = 0
+                for block in blockchain.chain:
+                    total_mining_percentage += block.nonce / (2 ** blockchain.difficulty)
+                
+                # Redistribute points based on mining percentage
+                for block in blockchain.chain:
+                    block.data = block.data * (block.nonce / (2 ** blockchain.difficulty)) // 1 + block.data // 1 + block.nonce // 1.4(block'"if" if block.;'des.;'(C.(s°,;://C'"e.r.t' if block).'****************************************************
+                    # Your code here
+                    # Calculate the total mining percentage of NFTs
+                    total_mining_percentage = 0
+                    for block in blockchain.chain:
+                        total_mining_percentage += block.nonce / (2 ** blockchain.difficulty)
+                        # Calculate the total mining amount
+                        total_mining_amount = 0
+                        for block in blockchain.chain:
+                            total_mining_amount += block.nonce / (2 ** blockchain.difficulty)
+
+                        # Generate QR code with the mining amount
+                        qr = qrcode.QRCode(version=1, box_size=10, border=4)
+                        qr.add_data(str(total_mining_amount))
+                        qr.make(fit=True)
+
+                        # Print the QR code
+                        qr.print_ascii()
+                        # Your code here
+                        # Calculate the total mining amount
+                        total_mining_amount = 0
+                        for block in blockchain.chain:
+                            total_mining_amount += block.nonce / (2 ** blockchain.difficulty)
+                            .classmethod(total_mining_amount*µ$10).assert_equal(total_mining_amount.)
