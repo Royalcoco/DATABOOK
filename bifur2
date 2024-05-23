@@ -67,3 +67,8 @@ engine3.save_to_file(text3, 'module3.wav')
 
 # Envoi du mot-clé à World.wide.W'e_bifur
 send_keyword_to_webifur("mot-clé")
+import pyttsx3
+
+def send_keyword_to_webifur(keyword) do
+  # Code to send keyword to World.wide.W'e_bifur
+end
