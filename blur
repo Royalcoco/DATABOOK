@@ -1,0 +1,71 @@
+import os
+import getpass
+import shutil
+
+# Niveau 1 de sécurité : mot de passe à double authentification
+def double_authentification():
+    password1 = getpass.getpass("Entrez le premier mot de passe : ")
+    password2 = getpass.getpass("Entrez le deuxième mot de passe : ")
+
+    if password1 == password2:
+        print("Authentification réussie !")
+        niveau2()
+    else:
+        print("Authentification échouée.")
+
+# Niveau 2 de sécurité : synchronisation de données
+def niveau2():
+    password = getpass.getpass("Entrez le mot de passe pour accéder au niveau 2 : ")
+
+    if password == "mon_mot_de_passe":
+        print("Accès au niveau 2 autorisé !")
+        synchronisation_donnees()
+    else:
+        print("Mot de passe incorrect.")
+
+# Synchronisation de données
+def synchronisation_donnees():
+    # Envoyer les données vers un dossier maître
+    shutil.copytree("dossier_source", "dossier_maitre")
+
+    # Compresser les données pour le client
+    shutil.make_archive("dossier_client", "zip", "dossier_source")
+
+    print("Synchronisation de données terminée.")
+
+# Créer un dossier
+def creer_dossier():
+    nom_dossier = input("Entrez le nom du dossier : ")
+    os.makedirs(nom_dossier)
+
+    print("Dossier créé avec succès !")
+    double_authentification()
+
+# Appel de la fonction pour créer le dossier
+creer_dossier()
+# Translate de devise par nombre de point
+def translate_devises():
+    devise_source = input("Entrez la devise source : ")
+    devise_cible = input("Entrez la devise cible : ")
+    montant = float(input("Entrez le montant à convertir : "))
+    taux_conversion = 1.5  # Exemple de taux de conversion
+    montant_converti = montant * taux_conversion
+    print(f"{montant} {devise_source} équivaut à {montant_converti} {devise_cible}.")
+
+# Blockchain de 3 niveaux de sécurité
+def blockchain_securite():
+    mot_de_passe1 = getpass.getpass("Entrez le premier mot de passe : ")
+    mot_de_passe2 = getpass.getpass("Entrez le deuxième mot de passe : ")
+    mot_de_passe3 = getpass.getpass("Entrez le troisième mot de passe : ")
+
+    if mot_de_passe1 == mot_de_passe2 and mot_de_passe2 == mot_de_passe3:
+        print("Validation des mots de passe réussie !")
+        # Code pour la blockchain de sécurité
+    else:
+        print("Validation des mots de passe échouée.")
+
+# Appel de la fonction pour la traduction de devises
+translate_devises()
+
+# Appel de la fonction pour la blockchain de sécurité
+blockchain_securite()
