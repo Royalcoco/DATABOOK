@@ -1,0 +1,485 @@
+import sqlite3
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+import sqlite3
+import sys
+import sqlite3
+from PyQt5.QtWidgets import QApplication, QMainWindow, QOpenGLWidget
+from PyQt5.QtCore import QTimer
+from OpenGL.GL import *
+from OpenGL.GLU import *
+import numpy as np
+import math
+import sys
+import sqlite3
+import cv2
+from PyQt5.QtWidgets import QApplication, QMainWindow, QOpenGLWidget
+from PyQt5.QtCore import QTimer
+from OpenGL.GL import *
+from OpenGL.GLU import *
+import numpy as np
+import math
+from PIL import Image
+from PIL import Image, ImageDraw, ImageFont
+from web3 import Web3
+import os
+import qrcode
+
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract MiningContract {
+    struct MiningData {
+        uint256 quantity;
+        uint256 speed;
+    }
+
+    mapping(address => MiningData) public miners;
+
+    function recordMiningData(uint256 _quantity, uint256 _speed) public {
+        miners[msg.sender] = MiningData(_quantity, _speed);
+    }
+
+    function getMiningData(address _miner) public view returns (uint256, uint256) {
+        MiningData memory data = miners[_miner];
+        return (data.quantity, data.speed);
+    }
+}
+
+# Connexion à un noeud Ethereum (par exemple, via Infura)
+web3 = Web3(Web3.HTTPProvider('https://rinkeby.infura.io/v3/YOUR_INFURA_PROJECT_ID'))
+
+# Adresse du smart contract et ABI
+contract_address = '0xYourContractAddress'
+abi = [
+    {
+        "constant": False,
+        "inputs": [
+            {
+                "name": "_quantity",
+                "type": "uint256"
+            },
+            {
+                "name": "_speed",
+                "type": "uint256"
+            }
+        ],
+        "name": "recordMiningData",
+        "outputs": [],
+        "payable": False,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": True,
+        "inputs": [
+            {
+                "name": "_miner",
+                "type": "address"
+            }
+        ],
+        "name": "getMiningData",
+        "outputs": [
+            {
+                "name": "",
+                "type": "uint256"
+            },
+            {
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "payable": False,
+        "stateMutability": "view",
+        "type": "function"
+    }
+]
+
+# Connexion à la base de données SQLite
+conn = sqlite3.connect('animations.db')
+c = conn.cursor()
+
+# Création d'une table
+c.execute('''
+CREATE TABLE IF NOT EXISTS spheres (
+    id INTEGER PRIMARY KEY,
+    x FLOAT,
+    y FLOAT,
+    z FLOAT,
+    radius FLOAT,
+    color TEXT
+)
+''')
+
+# Insertion de données
+spheres_data = [
+    (1, 0, 0, 0, 1, 'red'),
+    (2, 1, 1, 1, 0.5, 'blue')
+]
+
+c.executemany('INSERT INTO spheres VALUES (?, ?, ?, ?, ?, ?)', spheres_data)
+conn.commit()
+
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+
+# Récupération des données
+c.execute('SELECT x, y, z, radius, color FROM spheres')
+for sphere in c.fetchall():
+    x, y, z, r, color = sphere
+    u, v = np.mgrid[0:2*np.pi:20j, 0:np.pi:10j]
+    xs = x + r * np.cos(u) * np.sin(v)
+    ys = y + r * np.sin(u) * np.sin(v)
+    zs = z + r * np.cos(v)
+    ax.plot_surface(xs, ys, zs, color=color)
+
+ax.set_xlabel('X')
+ax.set_ylabel('Y')
+ax.set_zlabel('Z')
+plt.show()
+
+# Fermeture de la connexion à la base de données
+conn.close()
+
+# Connexion à la base de données SQLite
+conn = sqlite3.connect('animation_params.db')
+cursor = conn.cursor()
+
+# Création d'une table pour stocker les paramètres
+cursor.execute('''
+    CREATE TABLE IF NOT EXISTS params (
+        id INTEGER PRIMARY KEY,
+        param_name TEXT NOT NULL,
+        param_value REAL NOT NULL
+    )
+''')
+
+# Insertion de quelques valeurs de paramètres
+cursor.execute('INSERT INTO params (param_name, param_value) VALUES (?, ?)', ('frequency', 1.0))
+cursor.execute('INSERT INTO params (param_name, param_value) VALUES (?, ?)', ('amplitude', 1.0))
+cursor.execute('INSERT INTO params (param_name, param_value) VALUES (?, ?)', ('phase', 0.0))
+
+conn.commit()
+conn.close()
+
+
+class GLWidget(QOpenGLWidget):
+    def __init__(self):
+        super(GLWidget, self).__init__()
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.update)
+        self.timer.start(16)  # Approx. 60 FPS
+        self.angle = 0
+
+        # Load parameters from the database
+        self.load_params()
+
+    def load_params(self):
+        conn = sqlite3.connect('animation_params.db')
+        cursor = conn.cursor()
+        cursor.execute('SELECT param_name, param_value FROM params')
+        self.params = {row[0]: row[1] for row in cursor.fetchall()}
+        conn.close()
+
+    def initializeGL(self):
+        glClearColor(0.0, 0.0, 0.0, 1.0)
+        glEnable(GL_DEPTH_TEST)
+
+    def resizeGL(self, w, h):
+        glViewport(0, 0, w, h)
+        glMatrixMode(GL_PROJECTION)
+        glLoadIdentity()
+        gluPerspective(45.0, w / h, 1.0, 100.0)
+        glMatrixMode(GL_MODELVIEW)
+
+    def paintGL(self):
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+        glLoadIdentity()
+        gluLookAt(0.0, 0.0, 5.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0)
+
+        glRotatef(self.angle, 0.0, 1.0, 0.0)
+
+        self.draw_shape()
+        self.angle += self.params['frequency']
+
+    def draw_shape(self):
+        glBegin(GL_QUADS)
+        for x in range(-10, 10):
+            for y in range(-10, 10):
+                z = self.params['amplitude'] * math.sin(math.sqrt(x ** 2 + y ** 2) - self.angle * self.params['phase'])
+                glVertex3f(x, y, z)
+        glEnd()
+
+class MainWindow(QMainWindow):
+    def __init__(self):
+        super(MainWindow, self).__init__()
+        self.setWindowTitle('3D Animation')
+        self.setGeometry(100, 100, 800, 600)
+        self.glWidget = GLWidget()
+        self.setCentralWidget(self.glWidget)
+
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    window = MainWindow()
+    window.show()
+    sys.exit(app.exec_())
+
+class GLWidget(QOpenGLWidget):
+    def __init__(self):
+        super(GLWidget, self).__init__()
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.update)
+        self.timer.start(16)  # Approx. 60 FPS
+        self.angle = 0
+
+        # Load parameters from the database
+        self.load_params()
+
+        # Setup OpenCV video writer
+        self.frame_width = 800
+        self.frame_height = 600
+        self.video_writer = cv2.VideoWriter('animation.mp4', cv2.VideoWriter_fourcc(*'mp4v'), 60, (self.frame_width, self.frame_height))
+
+    def load_params(self):
+        conn = sqlite3.connect('animation_params.db')
+        cursor = conn.cursor()
+        cursor.execute('SELECT param_name, param_value FROM params')
+        self.params = {row[0]: row[1] for row in cursor.fetchall()}
+        conn.close()
+
+    def initializeGL(self):
+        glClearColor(0.0, 0.0, 0.0, 1.0)
+        glEnable(GL_DEPTH_TEST)
+
+    def resizeGL(self, w, h):
+        glViewport(0, 0, w, h)
+        glMatrixMode(GL_PROJECTION)
+        glLoadIdentity()
+        gluPerspective(45.0, w / h, 1.0, 100.0)
+        glMatrixMode(GL_MODELVIEW)
+
+    def paintGL(self):
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+        glLoadIdentity()
+        gluLookAt(0.0, 0.0, 5.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0)
+
+        glRotatef(self.angle, 0.0, 1.0, 0.0)
+
+        self.draw_shape()
+        self.angle += self.params['frequency']
+
+        # Capture the frame and write to video
+        self.capture_frame()
+
+    def draw_shape(self):
+        glBegin(GL_QUADS)
+        for x in range(-10, 10):
+            for y in range(-10, 10):
+                z = self.params['amplitude'] * math.sin(math.sqrt(x ** 2 + y ** 2) - self.angle * self.params['phase'])
+                glVertex3f(x, y, z)
+        glEnd()
+
+    def capture_frame(self):
+        glPixelStorei(GL_PACK_ALIGNMENT, 1)
+        data = glReadPixels(0, 0, self.frame_width, self.frame_height, GL_RGB, GL_UNSIGNED_BYTE)
+        image = np.frombuffer(data, np.uint8).reshape(self.frame_height, self.frame_width, 3)
+        image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+        self.video_writer.write(image)
+
+    def closeEvent(self, event):
+        self.video_writer.release()
+        super(GLWidget, self).closeEvent(event)
+
+class MainWindow(QMainWindow):
+    def __init__(self):
+        super(MainWindow, self).__init__()
+        self.setWindowTitle('3D Animation')
+        self.setGeometry(100, 100, 800, 600)
+        self.glWidget = GLWidget()
+        self.setCentralWidget(self.glWidget)
+
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    window = MainWindow()
+    window.show()
+    sys.exit(app.exec_())
+
+def add_metadata_to_video(video_path, output_path):
+    # Créer une image de couverture
+    cover_image = Image.new('RGB', (800, 600), color='black')
+    draw = ImageDraw.Draw(cover_image)
+    font = ImageFont.truetype('arial.ttf', 30)
+    text = "3D Animation NFT\nParameters:\nFrequency: 1.0\nAmplitude: 1.0\nPhase: 0.0"
+    draw.text((50, 50), text, fill="white", font=font)
+    cover_image.save('cover.jpg')
+
+    # Ajouter la couverture comme miniature (poster) à la vidéo
+    video = cv2.VideoCapture(video_path)
+    fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+    out = cv2.VideoWriter(output_path, fourcc, 60.0, (int(video.get(3)), int(video.get(4))))
+
+    while(video.isOpened()):
+        ret, frame = video.read()
+        if not ret:
+            break
+        out.write(frame)
+
+    video.release()
+    out.release()
+
+    # Ajouter la miniature à la vidéo
+    command = f'ffmpeg -i {output_path} -i cover.jpg -map 0 -map 1 -c copy -disposition:v:1 attached_pic {output_path}'
+    os.system(command)
+
+if __name__ == '__main__':
+    add_metadata_to_video('animation.mp4', 'animation_with_metadata.mp4')
+
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract MiningContract {
+    struct MiningData {
+        uint256 quantity;
+        uint256 speed;
+    }
+
+    mapping(address => MiningData) public miners;
+
+    function recordMiningData(uint256 _quantity, uint256 _speed) public {
+        miners[msg.sender] = MiningData(_quantity, _speed);
+    }
+
+    function getMiningData(address _miner) public view returns (uint256, uint256) {
+        MiningData memory data = miners[_miner];
+        return (data.quantity, data.speed);
+    }
+}
+
+# Connexion à un noeud Ethereum (par exemple, via Infura)
+web3 = Web3(Web3.HTTPProvider('https://rinkeby.infura.io/v3/YOUR_INFURA_PROJECT_ID'))
+
+# Adresse du smart contract et ABI
+contract_address = '0xYourContractAddress'
+abi = [
+    {
+        "constant": False,
+        "inputs": [
+            {
+                "name": "_quantity",
+                "type": "uint256"
+            },
+            {
+                "name": "_speed",
+                "type": "uint256"
+            }
+        ],
+        "name": "recordMiningData",
+        "outputs": [],
+        "payable": False,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": True,
+        "inputs": [
+            {
+                "name": "_miner",
+                "type": "address"
+            }
+        ],
+        "name": "getMiningData",
+        "outputs": [
+            {
+                "name": "",
+                "type": "uint256"
+            },
+            {
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "payable": False,
+        "stateMutability": "view",
+        "type": "function"
+    }
+]
+
+contract = web3.eth.contract(address=contract_address, abi=abi)
+
+# Fonction pour envoyer les données de minage
+def send_mining_data(quantity, speed, private_key):
+    account = web3.eth.account.privateKeyToAccount(private_key)
+    tx = contract.functions.recordMiningData(quantity, speed).buildTransaction({
+        'from': account.address,
+        'nonce': web3.eth.getTransactionCount(account.address),
+        'gas': 2000000,
+        'gasPrice': web3.toWei('50', 'gwei')
+    })
+    
+    signed_tx = web3.eth.account.signTransaction(tx, private_key)
+    tx_hash = web3.eth.sendRawTransaction(signed_tx.rawTransaction)
+    return web3.toHex(tx_hash)
+
+# Exemple d'utilisation
+private_key = 'YOUR_PRIVATE_KEY'
+quantity = 100
+speed = 50
+
+tx_hash = send_mining_data(quantity, speed, private_key)
+print(f'Transaction hash: {tx_hash}')
+
+# Generate QR code with embedded password
+password = "my_password"
+qr_data = f"double_factor:{password}"
+qr = qrcode.QRCode()
+qr.add_data(qr_data)
+qr.make(fit=True)
+qr_img = qr.make_image()
+
+# Save QR code image
+qr_img.save("qr_code.png")
+
+# Identify the double factor in the new QR code
+decoded_qr = qrcode.decode("qr_code.png")
+if decoded_qr:
+    qr_data = decoded_qr[0].data.decode("utf-8")
+    if qr_data.startswith("double_factor:"):
+        password = qr_data.split(":")[1]
+        print(f"Double factor password: {password}")
+    else:
+        print("Invalid QR code")
+else:
+    print("Failed to decode QR code")
+    
+# Generate QR code with embedded password
+password = "my_password"
+qr_data = f"double_factor:{password}"
+qr = qrcode.QRCode()
+qr.add_data(qr_data)
+qr.make(fit=True)
+qr_img = qr.make_image()
+
+# Save QR code image
+qr_img.save("qr_code.png")
+
+# Identify the double factor in the new QR code
+decoded_qr = qrcode.decode("qr_code.png")
+if decoded_qr:
+    qr_data = decoded_qr[0].data.decode("utf-8")
+    if qr_data.startswith("double_factor:"):
+        password = qr_data.split(":")[1]
+        print(f"Double factor password: {password}")
+    else:
+        print("Invalid QR code")
+else:
+    print("Failed to decode QR code")
+    
+# Generate QR code with embedded password
+password = "my_password"
+qr_data = f"double_factor:{password}"
+qr = qrcode.QRCode()
+qr.add_data(qr_data)
+qr.make(fit=True)
+qr_img = qr.make_image()
+qr_img.save("qr_code.png")
+# Ferme la boucle ici
