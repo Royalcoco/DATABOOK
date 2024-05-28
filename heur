@@ -1,0 +1,27 @@
+import cv2
+import numpy as np
+from PIL import Image
+import glob
+
+# Chemins vers les images
+image_paths = ['/mnt/data/file-ELWkj7CbfO1oc0Pg5Q9L26ef', '/mnt/data/file-7YYFvkurGQgIAI34oy5wVxyz']
+
+# Paramètres vidéo
+frame_width = 800
+frame_height = 800
+frame_rate = 30
+duration = 13  # en secondes
+total_frames = frame_rate * duration
+
+# Créer un writer vidéo
+out = cv2.VideoWriter('output_animation.mp4', cv2.VideoWriter_fourcc(*'mp4v'), frame_rate, (frame_width, frame_height))
+
+# Charger les images et les redimensionner
+images = [cv2.cvtColor(np.array(Image.open(path).resize((frame_width, frame_height))), cv2.COLOR_RGB2BGR) for path in image_paths]
+
+# Créer une animation en alternant les images
+for i in range(total_frames):
+    out.write(images[i % len(images)])
+
+# Libérer le writer vidéo
+out.release()
