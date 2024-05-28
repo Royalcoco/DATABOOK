@@ -1,0 +1,49 @@
+# Import des bibliothèques nécessaires
+import qrcode
+import numpy as np
+import matplotlib.pyplot as plt
+from flask import Flask, render_template, request, send_file
+from io import BytesIO
+
+# Fonction de génération de QR code modifié
+def generate_qr_code(data):
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=10,
+        border=4,
+    )
+    qr.add_data(data)
+    qr.make(fit=True)
+
+    img = qr.make_image(fill='black', back_color='white').convert('L')
+    img = np.array(img)
+
+    # Application de transformations trigonométriques
+    theta = np.radians(30)  # Exemple de rotation de 30 degrés
+    c, s = np.cos(theta), np.sin(theta)
+    R = np.array(((c, -s), (s, c)))
+
+    center = np.array(img.shape) / 2
+    indices = np.indices(img.shape).reshape(2, -1)
+    indices_centered = indices - center[:, None]
+    new_indices = R @ indices_centered
+    new_indices_centered = new_indices + center[:, None]
+    new_indices_centered = np.clip(new_indices_centered, 0, np.array(img.shape)[:, None] - 1)
+    new_img = img[tuple(new_indices_centered.astype(int))].reshape(img.shape)
+
+    return new_img
+
+# Développement de la plateforme Flask
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/generate', methods=['POST'])
+def generate():
+    data = request.form['data']
+    img = generate_qr_code(data)
+
+   
