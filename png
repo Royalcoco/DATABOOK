@@ -1,0 +1,33 @@
+import qrcode
+import math
+
+def generate_rotating_qr_code(data, filename):
+    qr = qrcode.QRCode(version=1, error_correction=qrcode.constants.ERROR_CORRECT_L, box_size=10, border=4)
+    angle = 0
+    while angle < 360:
+        x = math.cos(math.radians(angle))
+        y = math.sin(math.radians(angle))
+        qr.add_data(data)
+        qr.make()
+        img = qr.make_image(fill_color="black", back_color="white").rotate(angle, expand=True)
+        img.save(f"{filename}_{angle}.png")
+        qr.clear()
+        angle += 10
+
+data = "Hello, World!"
+filename = "rotating_qr_code"
+generate_rotating_qr_code(data, filename)
+
+print("QR Code generated successfully!")
+
+# References:
+# https://pypi.org/project/qrcode/
+# https://www.geeksforgeeks.org/python-generate-qr-code-using-pyqrcode-module/
+# https://www.geeksforgeeks.org/python-generate-qr-code-using-pil/
+# https://www.geeksforgeeks.org/python-rotate-image-using-pil/
+# https://www.geeksforgeeks.org/python-math-cos-method/
+# https://www.geeksforgeeks.org/python-math-sin-method/
+# https://www.geeksforgeeks.org/python-math-radians-method/
+# https://www.geeksforgeeks.org/python-math-degrees-method/
+# https://www.geeksforgeeks.org/python-math-pi-method/
+# https://www.geeksforgeeks.org/python-math-sqrt-method/
