@@ -1,0 +1,42 @@
+# File: create_wallet.py
+
+from web3 import Web3
+import os
+import json
+
+def generate_wallet():
+    # Initialize a Web3 instance
+    w3 = Web3()
+
+    # Generate a new private key
+    account = w3.eth.account.create()
+
+    # Extract the private key and address
+    private_key = account.privateKey.hex()
+    address = account.address
+
+    # Prepare the wallet data
+    wallet_data = {
+        "private_key": private_key,
+        "address": address
+    }
+
+    # Define the output file path
+    output_file = "wallet.json"
+
+    # Save the wallet data to the output file
+    with open(output_file, 'w') as f:
+        json.dump(wallet_data, f, indent=4)
+
+    print(f"Wallet created successfully! Private key and address stored in {output_file}")
+
+if
+__name__ == "__main__":
+    generate_wallet()
+    
+# Run the script
+# python3 create_wallet.py
+
+# Output
+# Wallet created successfully! Private key and address stored in wallet.json
+```
