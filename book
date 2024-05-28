@@ -1,0 +1,73 @@
+import unittest
+import numpy as np
+from app import generate_euler_disk_qr
+from flask import Flask, request, render_template, send_file, jsonify
+import qrcode
+import numpy as np
+import io
+
+class TestQRCodeGeneration(unittest.TestCase):
+
+    def test_generate_euler_disk_qr(self):
+        data = "Test Data"
+        rotation_angle = 45
+        img = generate_euler_disk_qr(data, rotation_angle)
+        self.assertIsNotNone(img)
+        self.assertEqual(img.size, (290, 290))  # Example size check
+
+if __name__ == '__main__':
+    unittest.main()
+
+app = Flask(__name__)
+
+def generate_euler_disk_qr(data, rotation_angle):
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_H,
+        box_size=10,
+        border=4,
+    )
+    qr.add_data(data)
+    qr.make(fit=True)
+    
+    img = qr.make_image(fill='black', back_color='white')
+    
+    img_array = np.array(img.convert('L'))
+    points = np.argwhere(img_array == 0)
+    center = np.array(img_array.shape) / 2
+    points = points - center
+    
+    angle = np.deg2rad(rotation_angle)
+    rotation_matrix = np.array([
+        [np.cos(angle), -np.sin(angle)],
+        [np.sin(angle), np.cos(angle)]
+    ])
+    rotated_points = points @ rotation_matrix.T
+    rotated_points = rotated_points + center
+    
+    rotated_img_array = np.ones_like(img_array) * 255
+    for point in rotated_points:
+        if 0 <= int(point[0]) < rotated_img_array.shape[0] and 0 <= int(point[1]) < rotated_img_array.shape[1]:
+            rotated_img_array[int(point[0]), int(point[1])] = 0
+    
+    rotated_img = qrcode.image.pil.PilImage.fromarray(rotated_img_array)
+    return rotated_img
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/generate', methods=['POST'])
+def generate():
+    data = request.json['data']
+    rotation_angle = float(request.json['rotation_angle'])
+    
+    img = generate_euler_disk_qr(data, rotation_angle)
+    buf = io.BytesIO()
+    img.save(buf, format='PNG')
+    buf.seek(0)
+    
+    return send_file(buf, mimetype='image/png')
+
+if __name__ == '__main__':
+    app.run(debug=True)
