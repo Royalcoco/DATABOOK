@@ -47,3 +47,22 @@ def generate():
     img = generate_qr_code(data)
 
    
+
+    fig, ax = plt.subplots()
+    ax.imshow(img, cmap='gray')
+    ax.axis('off')
+    
+    # Sauvegarde de l'image dans un buffer
+    buf = BytesIO()
+    plt.savefig(buf, format='png')
+    buf.seek(0)
+    
+    return send_file(buf, mimetype='image/png')
+
+if __name__ == '__main__':
+    app.run(debug=True)
+```
+
+Pour lancer l'application, il suffit de lancer la commande suivante dans un terminal : `python3 app.py`. L'application sera accessible à l'adresse `http://--server-ip--:5000/`.
+
+## Conclusion
