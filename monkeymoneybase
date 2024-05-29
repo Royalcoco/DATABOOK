@@ -1,0 +1,162 @@
+
+const WebSocket = require('ws');
+const { Connection, PublicKey, clusterApiUrl, Keypair, LAMPORTS_PER_SOL } = require('@solana/web3.js');
+const fs = require('fs');
+const xlsx = require('xlsx');
+const path = require('path');
+
+const wss = new WebSocket.Server({ port: 8080 });
+const connection = new Connection(clusterApiUrl('devnet'), 'confirmed');
+const wallet = Keypair.generate();
+const maxUsers = 200;
+let users = [];
+let excelData = [];
+
+// Load Excel data
+function loadExcelData() {
+  const workbook = xlsx.readFile(path.join(__dirname, 'data.xlsx'));
+  const sheet_name_list = workbook.SheetNames;
+  excelData = xlsx.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]]);
+}
+
+// Handle user connection
+wss.on('connection', (ws) => {
+  if (users.length >= maxUsers) {
+    ws.send(JSON.stringify({ type: 'error', message: 'Max users limit reached' }));
+    ws.close();
+    return;
+  }
+
+  ws.on('message', (message) => {
+    const data = JSON.parse(message);
+    
+    switch(data.type) {
+      case 'join':
+        handleJoin(ws, data.username);
+        break;
+      case 'exchange':
+        handleExchange(ws, data.username, data.value);
+        break;
+      default:
+        break;
+    }
+  });
+});
+
+function handleJoin(ws, username) {
+  if (users.length < maxUsers) {
+    users.push({ username, ws });
+    ws.send(JSON.stringify({ type: 'success', message: 'Joined successfully' }));
+  }
+}
+
+async function handleExchange(ws, username, value) {
+  const userIndex = users.findIndex(user => user.username === username);
+  if (userIndex === -1) {
+    ws.send(JSON.stringify({ type: 'error', message: 'User not found' }));
+    return;
+  }
+
+  // Solana transaction
+  try {
+    const transaction = await connection.requestAirdrop(wallet.publicKey, value * LAMPORTS_PER_SOL);
+    await connection.confirmTransaction(transaction);
+
+    // Update Excel data
+    excelData.push({ username, value });
+    const newWorkbook = xlsx.utils.book_new();
+    const newWorksheet = xlsx.utils.json_to_sheet(excelData);
+    xlsx.utils.book_append_sheet(newWorkbook, newWorksheet, 'Sheet1');
+    xlsx.writeFile(newWorkbook, path.join(__dirname, 'data.xlsx'));
+
+    ws.send(JSON.stringify({ type: 'success', message: 'Exchange completed successfully' }));
+  } catch (error) {
+    ws.send(JSON.stringify({ type: 'error', message: 'Transaction failed' }));
+  }
+}
+
+// Load Excel data on startup
+loadExcelData();
+
+console.log('Server is running on ws://localhost:8080');
+
+const WebSocket = require('ws');
+const { Connection, PublicKey, clusterApiUrl, Keypair, LAMPORTS_PER_SOL } = require('@solana/web3.js');
+const fs = require('fs');
+const xlsx = require('xlsx');
+const path = require('path');
+
+const wss = new WebSocket.Server({ port: 8080 });
+const connection = new Connection(clusterApiUrl('devnet'), 'confirmed');
+const wallet = Keypair.generate();
+const maxUsers = 200;
+let users = [];
+let excelData = [];
+
+// Load Excel data
+function loadExcelData() {
+  const workbook = xlsx.readFile(path.join(__dirname, 'data.xlsx'));
+  const sheet_name_list = workbook.SheetNames;
+  excelData = xlsx.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]]);
+}
+
+// Handle user connection
+wss.on('connection', (ws) => {
+  if (users.length >= maxUsers) {
+    ws.send(JSON.stringify({ type: 'error', message: 'Max users limit reached' }));
+    ws.close();
+    return;
+  }
+
+  ws.on('message', (message) => {
+    const data = JSON.parse(message);
+    
+    switch(data.type) {
+      case 'join':
+        handleJoin(ws, data.username);
+        break;
+      case 'exchange':
+        handleExchange(ws, data.username, data.value);
+        break;
+      default:
+        break;
+    }
+  });
+});
+
+function handleJoin(ws, username) {
+  if (users.length < maxUsers) {
+    users.push({ username, ws });
+    ws.send(JSON.stringify({ type: 'success', message: 'Joined successfully' }));
+  }
+}
+
+async function handleExchange(ws, username, value) {
+  const userIndex = users.findIndex(user => user.username === username);
+  if (userIndex === -1) {
+    ws.send(JSON.stringify({ type: 'error', message: 'User not found' }));
+    return;
+  }
+
+  // Solana transaction
+  try {
+    const transaction = await connection.requestAirdrop(wallet.publicKey, value * LAMPORTS_PER_SOL);
+    await connection.confirmTransaction(transaction);
+
+    // Update Excel data
+    excelData.push({ username, value });
+    const newWorkbook = xlsx.utils.book_new();
+    const newWorksheet = xlsx.utils.json_to_sheet(excelData);
+    xlsx.utils.book_append_sheet(newWorkbook, newWorksheet, 'Sheet1');
+    xlsx.writeFile(newWorkbook, path.join(__dirname, 'data.xlsx'));
+
+    ws.send(JSON.stringify({ type: 'success', message: 'Exchange completed successfully' }));
+  } catch (error) {
+    ws.send(JSON.stringify({ type: 'error', message: 'Transaction failed' }));
+  }
+}
+
+// Load Excel data on startup
+loadExcelData();
+
+console.log('Server is running on ws://localhost:8080');
