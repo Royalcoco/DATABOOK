@@ -1,0 +1,47 @@
+pip install qrcode[pil] matplotlib Pillow web3 opencv-python pyotp
+
+import qrcode
+import matplotlib.pyplot as plt
+from PIL import Image, ImageDraw, ImageFont
+from web3 import Web3
+import numpy as np
+import cv2
+import random
+import time
+import math
+import pyotp
+import bluetooth
+
+# Configuration de la connexion à Ethereum
+w3 = Web3(Web3.HTTPProvider('https://mainnet.infura.io/v3/YOUR_INFURA_PROJECT_ID'))
+
+def create_graff_text_image(text):
+    font = ImageFont.truetype("arial.ttf", 80)
+    image = Image.new("RGB", (800, 400), (255, 255, 255))
+    draw = ImageDraw.Draw(image)
+    draw.text((50, 150), text, font=font, fill="black")
+    return image
+
+def add_qr_code(image, data):
+    qr = qrcode.QRCode(version=1, box_size=10, border=5)
+    qr.add_data(data)
+    qr.make(fit=True)
+    qr_img = qr.make_image(fill='black', back_color='white').convert('RGB')
+    image.paste(qr_img, (600, 50))
+    return image
+
+def calculate_latency(pings):
+    return np.mean(pings)
+
+def add_bonus_points(latency, base_points=100):
+    return base_points + (10 / latency)
+
+def create_nft_image(text, qr_data, pings):
+    image = create_graff_text_image(text)
+    image = add_qr_code(image, qr_data)
+    
+    latency = calculate_latency(pings)
+    bonus_points = add_bonus_points(latency)
+    
+    draw = ImageDraw.Draw(image)
+    draw.text((50, 300), f"Bonus Points: {bonus_points:.2f}", fill="black", font=ImageFont.truetype("arial.ttf", 40))
