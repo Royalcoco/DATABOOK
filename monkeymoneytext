@@ -1,0 +1,9 @@
+sudo apt install nodejs npm
+npm install @solana/web3.js
+npm install gl-matrix xlsx
+pattern1
+pattern2
+pattern3
+...
+npm install ws @solana/web3.js xlsx gl-matrix
+node server.js
