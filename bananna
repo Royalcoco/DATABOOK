@@ -1,0 +1,302 @@
+import os
+from PIL import Image, ImageDraw, ImageFont
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+from cryptography.fernet import Fernet
+from web3 import Web3
+
+import os
+
+from PIL import Image, ImageDraw, ImageFont
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+from cryptography.fernet import Fernet
+from solana.rpc.api import Client
+from solana.transaction import Transaction
+from solana.account import Account
+from solana.system_program import CreateAccountParams, create_account
+from solana.rpc.types import TxOpts
+
+import os
+import requests
+from PIL import Image, ImageDraw, ImageFont
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+from cryptography.fernet import Fernet
+from solana.rpc.api import Client
+from solana.transaction import Transaction
+from solana.account import Account
+from solana.system_program import CreateAccountParams, create_account
+from solana.rpc.types import TxOpts
+import tkinter as tk
+from tkinter import messagebox
+
+# Constants
+ANIMATION_FILE = "graff_banana_animation.mp4"
+ENCRYPTED_FILE = ANIMATION_FILE + '.encrypted'
+PASSWORD = "super_secure_password"
+
+# Step 1: Create the street art style banana
+def create_graff_banana():
+    img = Image.new('RGB', (500, 500), color='white')
+    d = ImageDraw.Draw(img)
+    # Draw the banana
+    d.ellipse([100, 150, 400, 350], fill=(255, 255, 0), outline=(0, 0, 0))
+    # Add graffiti style
+    font = ImageFont.truetype("arial.ttf", 40)
+    d.text((150, 250), "Graff Banana", font=font, fill=(0, 0, 0))
+    return img
+
+# Step 2: Create animation
+def create_animation():
+    fig, ax = plt.subplots()
+    banana_img = create_graff_banana()
+    ims = []
+
+    for i in range(10):
+        im = plt.imshow(banana_img, animated=True)
+        ims.append([im])
+
+    ani = animation.ArtistAnimation(fig, ims, interval=100, blit=True, repeat_delay=1000)
+    ani.save(ANIMATION_FILE)
+
+# Step 3: Encrypt the file
+def encrypt_file(file_path, password):
+    key = Fernet.generate_key()
+    cipher_suite = Fernet(key)
+
+    with open(file_path, 'rb') as file:
+        file_data = file.read()
+
+    encrypted_data = cipher_suite.encrypt(file_data)
+
+    with open(ENCRYPTED_FILE, 'wb') as file:
+        file.write(encrypted_data)
+
+    with open('encryption_key.txt', 'wb') as key_file:
+        key_file.write(key)
+
+    print(f"File encrypted with key: {key.decode()}")
+
+# Step 4: Create the NFT on Solana blockchain
+def create_nft_on_solana():
+    client = Client("https://api.mainnet-beta.solana.com")
+    account = Account()
+
+    # Simulate the creation of a new account for the NFT (solana token creation)
+    lamports = client.get_minimum_balance_for_rent_exemption(165)['result']
+    new_account = Account()
+    transaction = Transaction().add(
+        create_account(CreateAccountParams(
+            from_pubkey=account.public_key(),
+            new_account_pubkey=new_account.public_key(),
+            lamports=lamports,
+            space=165,
+            program_id=solana.token.TOKEN_PROGRAM_ID
+        ))
+    )
+
+    # Sign and send the transaction
+    tx_id = client.send_transaction(transaction, account, opts=TxOpts(skip_confirmation=False))
+    print(f"NFT created on Solana blockchain with transaction ID: {tx_id}")
+
+# Step 5: Compare with market prices
+def compare_market_prices():
+    # This step is a placeholder as market price comparison requires real-time data
+    # Here you can use an API to get the current market prices and compare
+    print("Comparing market prices... (This step requires real-time data)")
+
+# Main execution
+if __name__ == "__main__":
+    os.makedirs("secure_folder", exist_ok=True)
+    create_animation()
+    encrypt_file(ANIMATION_FILE, PASSWORD)
+    create_nft_on_solana()
+    compare_market_prices()
+
+# Step 1: Create the street art style banana
+def create_graff_banana():
+    img = Image.new('RGB', (500, 500), color='white')
+    d = ImageDraw.Draw(img)
+    # Draw the banana
+    d.ellipse([100, 150, 400, 350], fill=(255, 255, 0), outline=(0, 0, 0))
+    # Add graffiti style
+    font = ImageFont.truetype("arial.ttf", 40)
+    d.text((150, 250), "Graff Banana", font=font, fill=(0, 0, 0))
+    return img
+
+# Step 2: Create animation
+def create_animation():
+    fig, ax = plt.subplots()
+    banana_img = create_graff_banana()
+    ims = []
+
+    for i in range(10):
+        im = plt.imshow(banana_img, animated=True)
+        ims.append([im])
+
+    ani = animation.ArtistAnimation(fig, ims, interval=100, blit=True, repeat_delay=1000)
+    ani.save("graff_banana_animation.mp4")
+
+# Step 3: Encrypt the file
+def encrypt_file(file_path, password):
+    key = Fernet.generate_key()
+    cipher_suite = Fernet(key)
+
+    with open(file_path, 'rb') as file:
+        file_data = file.read()
+
+    encrypted_data = cipher_suite.encrypt(file_data)
+
+    with open(file_path + '.encrypted', 'wb') as file:
+        file.write(encrypted_data)
+
+    with open('encryption_key.txt', 'wb') as key_file:
+        key_file.write(key)
+
+    print(f"File encrypted with key: {key.decode()}")
+
+# Step 4: Create the NFT
+def create_nft():
+    w3 = Web3(Web3.HTTPProvider('https://mainnet.infura.io/v3/YOUR_INFURA_PROJECT_ID'))
+    address = "0xYourEthereumAddress"
+    private_key = "YourPrivateKey"
+
+    contract = w3.eth.contract(address="0xContractAddress", abi="YourContractABI")
+    nonce = w3.eth.getTransactionCount(address)
+    txn = contract.functions.mint(address, "path/to/graff_banana_animation.mp4.encrypted").buildTransaction({
+        'chainId': 1,
+        'gas': 2000000,
+        'gasPrice': w3.toWei('50', 'gwei'),
+        'nonce': nonce
+    })
+    signed_txn = w3.eth.account.signTransaction(txn, private_key=private_key)
+    w3.eth.sendRawTransaction(signed_txn.rawTransaction)
+
+    print("NFT created successfully")
+
+# Main execution
+if __name__ == "__main__":
+    os.makedirs("secure_folder", exist_ok=True)
+    create_animation()
+    encrypt_file("graff_banana_animation.mp4", "super_secure_password")
+    create_nft()
+
+
+# Constants
+ANIMATION_FILE = "graff_banana_animation.mp4"
+ENCRYPTED_FILE = ANIMATION_FILE + '.encrypted'
+PASSWORD = "super_secure_password"
+SOLANA_API_URL = "https://api.mainnet-beta.solana.com"
+COINGECKO_API_URL = "https://api.coingecko.com/api/v3/simple/price"
+
+# Step 1: Create the street art style banana
+def create_graff_banana():
+    img = Image.new('RGB', (500, 500), color='white')
+    d = ImageDraw.Draw(img)
+    # Draw the banana
+    d.ellipse([100, 150, 400, 350], fill=(255, 255, 0), outline=(0, 0, 0))
+    # Add graffiti style
+    font = ImageFont.truetype("arial.ttf", 40)
+    d.text((150, 250), "Graff Banana", font=font, fill=(0, 0, 0))
+    return img
+
+# Step 2: Create animation
+def create_animation():
+    fig, ax = plt.subplots()
+    banana_img = create_graff_banana()
+    ims = []
+
+    for i in range(10):
+        im = plt.imshow(banana_img, animated=True)
+        ims.append([im])
+
+    ani = animation.ArtistAnimation(fig, ims, interval=100, blit=True, repeat_delay=1000)
+    ani.save(ANIMATION_FILE)
+    messagebox.showinfo("Info", f"Animation created: {ANIMATION_FILE}")
+
+# Step 3: Encrypt the file
+def encrypt_file(file_path, password):
+    key = Fernet.generate_key()
+    cipher_suite = Fernet(key)
+
+    with open(file_path, 'rb') as file:
+        file_data = file.read()
+
+    encrypted_data = cipher_suite.encrypt(file_data)
+
+    with open(ENCRYPTED_FILE, 'wb') as file:
+        file.write(encrypted_data)
+
+    with open('encryption_key.txt', 'wb') as key_file:
+        key_file.write(key)
+
+    messagebox.showinfo("Info", f"File encrypted with key: {key.decode()}")
+
+# Step 4: Create the NFT on Solana blockchain
+def create_nft_on_solana():
+    client = Client(SOLANA_API_URL)
+    account = Account()
+
+    # Simulate the creation of a new account for the NFT (solana token creation)
+    lamports = client.get_minimum_balance_for_rent_exemption(165)['result']
+    new_account = Account()
+    transaction = Transaction().add(
+        create_account(CreateAccountParams(
+            from_pubkey=account.public_key(),
+            new_account_pubkey=new_account.public_key(),
+            lamports=lamports,
+            space=165,
+            program_id=solana.token.TOKEN_PROGRAM_ID
+        ))
+    )
+
+    # Sign and send the transaction
+    tx_id = client.send_transaction(transaction, account, opts=TxOpts(skip_confirmation=False))
+    messagebox.showinfo("Info", f"NFT created on Solana blockchain with transaction ID: {tx_id}")
+
+# Step 5: Compare with market prices
+def compare_market_prices():
+    response = requests.get(f"{COINGECKO_API_URL}?ids=solana&vs_currencies=usd")
+    sol_price = response.json()['solana']['usd']
+    messagebox.showinfo("Info", f"Current Solana price: ${sol_price}")
+    # Additional comparison logic can be added here
+
+# UI
+def create_ui():
+    root = tk.Tk()
+    root.title("NFT Creator")
+
+    create_animation_button = tk.Button(root, text="Create Animation", command=create_animation)
+    create_animation_button.pack(pady=10)
+
+    encrypt_file_button = tk.Button(root, text="Encrypt File", command=lambda: encrypt_file(ANIMATION_FILE, PASSWORD))
+    encrypt_file_button.pack(pady=10)
+
+    create_nft_button = tk.Button(root, text="Create NFT on Solana", command=create_nft_on_solana)
+    create_nft_button.pack(pady=10)
+
+    compare_prices_button = tk.Button(root, text="Compare Market Prices", command=compare_market_prices)
+    compare_prices_button.pack(pady=10)
+
+    root.mainloop()
+
+# Main execution
+if __name__ == "__main__":
+    os.makedirs("secure_folder", exist_ok=True)
+    create_ui()
+
+The script is divided into four main parts:
+    
+    Create the street art style banana
+    Create the animation
+    Encrypt the file
+    Create the NFT
+    
+The create_graff_banana function creates a street art style banana image using the PIL library. The create_animation function creates an animation of the graffiti banana by combining multiple frames of the image. The encrypt_file function encrypts the animation file using the Fernet encryption algorithm and saves the encrypted file and encryption key. The create_nft function interacts with an Ethereum smart contract to mint an NFT using the encrypted animation file.
+
+To run the script, you need to replace the placeholders with your actual Ethereum address, private key, Infura project ID, contract address, and contract ABI. You also need to have the required Python libraries installed. You can install them using pip:
+    
+    pip install pillow matplotlib cryptography web3
+    
+After running the script, you should see the NFT created successfully message, indicating that the NFT has been minted on the Ethereum blockchain. You can check the transaction on a blockchain explorer like Etherscan to verify the minting process.
