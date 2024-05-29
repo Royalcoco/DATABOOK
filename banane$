@@ -1,0 +1,89 @@
+import os
+from PIL import Image, ImageDraw, ImageFont
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+from cryptography.fernet import Fernet
+from web3 import Web3
+
+# Step 1: Create the street art style banana
+def create_graff_banana():
+    img = Image.new('RGB', (500, 500), color='white')
+    d = ImageDraw.Draw(img)
+    # Draw the banana
+    d.ellipse([100, 150, 400, 350], fill=(255, 255, 0), outline=(0, 0, 0))
+    # Add graffiti style
+    font = ImageFont.truetype("arial.ttf", 40)
+    d.text((150, 250), "Graff Banana", font=font, fill=(0, 0, 0))
+    return img
+
+# Step 2: Create animation
+def create_animation():
+    fig, ax = plt.subplots()
+    banana_img = create_graff_banana()
+    ims = []
+
+    for i in range(10):
+        im = plt.imshow(banana_img, animated=True)
+        ims.append([im])
+
+    ani = animation.ArtistAnimation(fig, ims, interval=100, blit=True, repeat_delay=1000)
+    ani.save("graff_banana_animation.mp4")
+
+# Step 3: Encrypt the file
+def encrypt_file(file_path, password):
+    key = Fernet.generate_key()
+    cipher_suite = Fernet(key)
+
+    with open(file_path, 'rb') as file:
+        file_data = file.read()
+
+    encrypted_data = cipher_suite.encrypt(file_data)
+
+    with open(file_path + '.encrypted', 'wb') as file:
+        file.write(encrypted_data)
+
+    with open('encryption_key.txt', 'wb') as key_file:
+        key_file.write(key)
+
+    print(f"File encrypted with key: {key.decode()}")
+
+# Step 4: Create the NFT
+def create_nft():
+    w3 = Web3(Web3.HTTPProvider('https://mainnet.infura.io/v3/YOUR_INFURA_PROJECT_ID'))
+    address = "0xYourEthereumAddress"
+    private_key = "YourPrivateKey"
+
+    contract = w3.eth.contract(address="0xContractAddress", abi="YourContractABI")
+    nonce = w3.eth.getTransactionCount(address)
+    txn = contract.functions.mint(address, "path/to/graff_banana_animation.mp4.encrypted").buildTransaction({
+        'chainId': 1,
+        'gas': 2000000,
+        'gasPrice': w3.toWei('50', 'gwei'),
+        'nonce': nonce
+    })
+    signed_txn = w3.eth.account.signTransaction(txn, private_key=private_key)
+    w3.eth.sendRawTransaction(signed_txn.rawTransaction)
+
+    print("NFT created successfully")
+
+# Main execution
+if __name__ == "__main__":
+    os.makedirs("secure_folder", exist_ok=True)
+    create_animation()
+    encrypt_file("graff_banana_animation.mp4", "super_secure_password")
+    create_nft()
+
+The script is divided into four main parts:
+    
+    Create the street art style banana
+    Create the animation
+    Encrypt the file
+    Create the NFT
+    
+The create_graff_banana function creates a street art style banana image using the PIL library. The create_animation function creates an animation of the graffiti banana by combining multiple frames of the image. The encrypt_file function encrypts the animation file using the Fernet encryption algorithm and saves the encrypted file and encryption key. The create_nft function interacts with an Ethereum smart contract to mint an NFT using the encrypted animation file.
+
+To run the script, you need to replace the placeholders with your actual Ethereum address, private key, Infura project ID, contract address, and contract ABI. You also need to have the required Python libraries installed. You can install them using pip:
+    
+    pip install pillow matplotlib cryptography web3
+    
+After running the script, you should see the NFT created successfully message, indicating that the NFT has been minted on the Ethereum blockchain. You can check the transaction on a blockchain explorer like Etherscan to verify the minting process.
