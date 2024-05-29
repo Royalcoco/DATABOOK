@@ -1,0 +1,90 @@
+pip install qrcode[pil] matplotlib Pillow web3 opencv-python
+
+import qrcode
+import matplotlib.pyplot as plt
+from PIL import Image, ImageDraw, ImageFont
+from web3 import Web3
+import numpy as np
+import cv2
+import random
+import time
+
+# Configuration de la connexion à Ethereum
+w3 = Web3(Web3.HTTPProvider('https://mainnet.infura.io/v3/YOUR_INFURA_PROJECT_ID'))
+
+def create_graff_text_image(text):
+    font = ImageFont.truetype("arial.ttf", 80)
+    image = Image.new("RGB", (800, 400), (255, 255, 255))
+    draw = ImageDraw.Draw(image)
+    draw.text((50, 150), text, font=font, fill="black")
+    return image
+
+def add_qr_code(image, data):
+    qr = qrcode.QRCode(version=1, box_size=10, border=5)
+    qr.add_data(data)
+    qr.make(fit=True)
+    qr_img = qr.make_image(fill='black', back_color='white').convert('RGB')
+    image.paste(qr_img, (600, 50))
+    return image
+
+def calculate_latency(pings):
+    return np.mean(pings)
+
+def add_bonus_points(latency, base_points=100):
+    return base_points + (10 / latency)
+
+def create_nft_image(text, qr_data, pings):
+    image = create_graff_text_image(text)
+    image = add_qr_code(image, qr_data)
+    
+    latency = calculate_latency(pings)
+    bonus_points = add_bonus_points(latency)
+    
+    draw = ImageDraw.Draw(image)
+    draw.text((50, 300), f"Bonus Points: {bonus_points:.2f}", fill="black", font=ImageFont.truetype("arial.ttf", 40))
+    return image
+
+def save_nft_to_blockchain(nft_image, account_address, private_key):
+    # Convert image to byte array
+    img_byte_arr = nft_image.tobytes()
+    
+    # Simulate saving data to Ethereum
+    nonce = w3.eth.getTransactionCount(account_address)
+    tx = {
+        'nonce': nonce,
+        'to': account_address,
+        'value': w3.toWei(0, 'ether'),
+        'gas': 2000000,
+        'gasPrice': w3.toWei('50', 'gwei'),
+        'data': img_byte_arr
+    }
+    signed_tx = w3.eth.account.signTransaction(tx, private_key)
+    tx_hash = w3.eth.sendRawTransaction(signed_tx.rawTransaction)
+    return tx_hash
+
+def generate_video_from_image(image):
+    video_name = 'nft_video.avi'
+    height, width, layers = np.array(image).shape
+    video = cv2.VideoWriter(video_name, cv2.VideoWriter_fourcc(*'DIVX'), 1, (width, height))
+    
+    for _ in range(3):  # 3 second video
+        video.write(np.array(image))
+    video.release()
+    return video_name
+
+if __name__ == "__main__":
+    graff_text = "Street Art NFT"
+    qr_data = "https://your-nft-link.com"
+    pings = [random.uniform(0.1, 0.5) for _ in range(10)]
+    
+    nft_image = create_nft_image(graff_text, qr_data, pings)
+    nft_image.show()
+    
+    account_address = '0xYourEthereumAddress'
+    private_key = 'YourPrivateKey'
+    
+    tx_hash = save_nft_to_blockchain(nft_image, account_address, private_key)
+    print(f"Transaction Hash: {tx_hash.hex()}")
+    
+    video_name = generate_video_from_image(nft_image)
+    print(f"NFT Video saved as: {video_name}")
