@@ -75,3 +75,41 @@ fox_miner = FoxMiner(cpu="HighPerformanceCPU", gpus=["GPU1", "GPU2"], ram="HighS
 fox_miner.initialize_hardware()
 fox_miner.optimize_performance()
 fox_miner.start_mining(blockchain, "Sample Data for Mining")
+import hashlib
+import os
+import ecdsa
+
+class FoxCoinWallet:
+    def __init__(self):
+        self.private_key = self.generate_private_key()
+        self.public_key = self.generate_public_key(self.private_key)
+        self.address = self.generate_address(self.public_key)
+
+    def generate_private_key(self):
+        return os.urandom(32)
+
+    def generate_public_key(self, private_key):
+        sk = ecdsa.SigningKey.from_string(private_key, curve=ecdsa.SECP256k1)
+        vk = sk.get_verifying_key()
+        return vk.to_string()
+
+    def generate_address(self, public_key):
+        sha256_1 = hashlib.sha256(public_key).digest()
+        ripemd160 = hashlib.new('ripemd160')
+        ripemd160.update(sha256_1)
+        return ripemd160.hexdigest()
+
+    def sign_transaction(self, transaction):
+        sk = ecdsa.SigningKey.from_string(self.private_key, curve=ecdsa.SECP256k1)
+        return sk.sign(transaction.encode('utf-8'))
+
+    def create_transaction(self, recipient_address, amount):
+        transaction = f'{self.address} -> {recipient_address} : {amount} FoxCoin'
+        signature = self.sign_transaction(transaction)
+        return {'transaction': transaction, 'signature': signature.hex()}
+
+# Create a new FoxCoin wallet
+wallet = FoxCoinWallet()
+print("Address:", wallet.address)
+transaction = wallet.create_transaction("recipient_address_example", 10)
+print("Transaction:", transaction)
