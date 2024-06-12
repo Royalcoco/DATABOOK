@@ -1,0 +1,77 @@
+import hashlib
+import time
+
+class Block:
+    def __init__(self, index, previous_hash, timestamp, data, hash):
+        self.index = index
+        self.previous_hash = previous_hash
+        self.timestamp = timestamp
+        self.data = data
+        self.hash = hash
+
+def calculate_hash(index, previous_hash, timestamp, data):
+    value = str(index) + str(previous_hash) + str(timestamp) + str(data)
+    return hashlib.sha256(value.encode('utf-8')).hexdigest()
+
+def create_genesis_block():
+    return Block(0, "0", int(time.time()), "Genesis Block", calculate_hash(0, "0", int(time.time()), "Genesis Block"))
+
+def create_new_block(previous_block, data):
+    index = previous_block.index + 1
+    timestamp = int(time.time())
+    hash = calculate_hash(index, previous_block.hash, timestamp, data)
+    return Block(index, previous_block.hash, timestamp, data, hash)
+
+# Initialize blockchain
+blockchain = [create_genesis_block()]
+previous_block = blockchain[0]
+
+# Adding new blocks
+num_blocks_to_add = 10
+for i in range(1, num_blocks_to_add + 1):
+    new_block = create_new_block(previous_block, f"Block #{i} Data")
+    blockchain.append(new_block)
+    previous_block = new_block
+    print(f"Block #{new_block.index} has been added to the blockchain!")
+    print(f"Hash: {new_block.hash}\n")
+import time
+import random
+
+class FoxMiner:
+    def __init__(self, cpu, gpus, ram, storage, cooling_system):
+        self.cpu = cpu
+        self.gpus = gpus
+        self.ram = ram
+        self.storage = storage
+        self.cooling_system = cooling_system
+        self.hash_rates = []
+
+    def initialize_hardware(self):
+        # Initialize CPU, GPU, RAM, storage, and cooling system
+        pass
+
+    def optimize_performance(self):
+        # Apply overclocking and optimization settings
+        pass
+
+    def mine(self, data):
+        # Simulate mining operation with FOX hardware
+        simulated_hash_rate = random.uniform(200, 500)
+        time.sleep(1)  # Simulate time delay
+        return calculate_hash(data, simulated_hash_rate)
+
+    def start_mining(self, blockchain, data):
+        # Start mining using FOX hardware
+        while True:
+            new_block = self.mine(data)
+            blockchain.append(new_block)
+            print(f"New block mined: {new_block}")
+            time.sleep(2)  # Delay to simulate continuous mining
+
+# Initialize FOX miner
+fox_miner = FoxMiner(cpu="HighPerformanceCPU", gpus=["GPU1", "GPU2"], ram="HighSpeedRAM", storage="FastSSD", cooling_system="EfficientCooling")
+
+# Start mining process
+fox_miner.initialize_hardware()
+fox_miner.optimize_performance()
+fox_miner.start_mining(blockchain, "Sample Data for Mining")
